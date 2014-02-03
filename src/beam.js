@@ -51,7 +51,21 @@ Vex.Flow.Beam = (function() {
 
       var i; // shared iterator
       var note;
-      if (!auto_stem) {
+      
+
+      this.cross_stave = false;
+
+      // Determine if the beam is a cross stave beam
+      var prevNote;
+      for (i = 0; i < notes.length; ++i) {
+        note = notes[i];
+        if (note.stave && prevNote && prevNote.stave && note.stave !== prevNote.stave){
+          this.cross_stave = true;
+        }
+        prevNote = note;
+      }
+
+      if (!auto_stem && !this.cross_stave) {
         for (i = 1; i < notes.length; ++i) {
           note = notes[i];
           if (note.getStemDirection() != this.stem_direction) {
@@ -59,6 +73,9 @@ Vex.Flow.Beam = (function() {
                 "Notes in a beam all have the same stem direction");
           }
         }
+      } else if (auto_stem && this.cross_stave) {
+        throw new Vex.RuntimeError("Bad Arguments", 
+          "No support for auto stemming cross-stave beams.");
       }
 
       var stem_direction = -1;
@@ -187,11 +204,12 @@ Vex.Flow.Beam = (function() {
         // Don't go all the way to the top (for thicker stems)
         var y_displacement = Vex.Flow.STEM_WIDTH * this.stem_direction;
 
+        var direction = this.cross_stave ? note.getStemDirection() : this.stem_direction;
         // Draw the stem
         this.context.fillRect(x_px,
             base_y_px, Vex.Flow.STEM_WIDTH,
             (((Math.abs(base_y_px - (getSlopeY(x_px) + y_shift)))) *
-              -this.stem_direction) + y_displacement);
+              -direction) + y_displacement);
       }
 
       var that = this;

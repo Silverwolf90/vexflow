@@ -141,6 +141,11 @@ Vex.Flow.Beam = (function() {
         return first_y_px + ((x - first_x_px) * slope);
       }
 
+      // Returns the Y coordinate for the slope at position X.
+      function getSlopeYWithOffset(x, yoffset) {
+        return yoffset + ((x - first_x_px) * slope);
+      }
+
       var inc = (this.render_options.max_slope - this.render_options.min_slope) /
           this.render_options.slope_iterations;
       var min_cost = Number.MAX_VALUE;
@@ -231,8 +236,8 @@ Vex.Flow.Beam = (function() {
         var beam_lines = [];
         var beam_started = false;
         var current_beam;
-        debugger;
-      for (var i = 0; i < that.notes.length; ++i) {
+        var prevNote;
+        for (var i = 0; i < that.notes.length; ++i) {
           var note = that.notes[i];
           var ticks = note.getIntrinsicTicks();
 
@@ -253,6 +258,10 @@ Vex.Flow.Beam = (function() {
               if (current_beam.end == null) {
                 // single note
                 current_beam.end = current_beam.start + 10; // TODO
+                debugger;
+                if (prevNote && prevNote.getStemDirection() !== that.stem_direction) {
+                  current_beam.cross = true;
+                }
               } else {
                 // we don't care
               }
@@ -260,6 +269,8 @@ Vex.Flow.Beam = (function() {
 
             beam_started = false;
           }
+
+          prevNote = note;
         }
 
         if (beam_started === true) {
@@ -267,14 +278,19 @@ Vex.Flow.Beam = (function() {
           if (current_beam.end == null) {
             // single note
             current_beam.end = current_beam.start - 10; // TODO
+            if (that.notes[that.notes.length-1].getStemDirection() !== that.stem_direction) {
+              current_beam.cross = true;
+            }
           }
         }
 
         return beam_lines;
       }
 
-      var valid_beam_durations = ["4", "8", "16", "32", "64"];
+      var cross_first_y_px = first_y_px;
+      var cross_last_y_px = last_y_px;
 
+      var valid_beam_durations = ["4", "8", "16", "32", "64"];
       // Draw the beams.
       for (i = 0; i < valid_beam_durations.length; ++i) {
         var duration = valid_beam_durations[i];
@@ -288,6 +304,12 @@ Vex.Flow.Beam = (function() {
           var last_x = beam_line.end + (Vex.Flow.STEM_WIDTH / 2);
           var last_y = getSlopeY(last_x);
 
+          if (beam_line.cross) {
+            first_y = getSlopeYWithOffset(first_x, cross_first_y_px);
+            last_y = getSlopeYWithOffset(last_x, cross_first_y_px);
+          }
+
+
           this.context.beginPath();
           this.context.moveTo(first_x, first_y + y_shift);
           this.context.lineTo(first_x, first_y + beam_width + y_shift);
@@ -299,6 +321,9 @@ Vex.Flow.Beam = (function() {
 
         first_y_px += beam_width * 1.5;
         last_y_px += beam_width * 1.5;
+
+        cross_first_y_px -= beam_width * 1.5;
+        cross_last_y_px -= beam_width * 1.5;
       }
 
       return true;

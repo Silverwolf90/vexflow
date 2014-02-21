@@ -494,7 +494,7 @@ Vex.Flow.Test.Beam.crossStave = function(options, contextBuilder) {
     newNote({ clef: "bass",  keys: ["e/3"], stem_direction: 1, duration: "8"}).setStave(stave2),
     newNote({ clef: "treble", keys: ["b/3"], stem_direction: -1, duration: "8"}).setStave(stave),
     newNote({ clef: "treble", keys: ["c/4"], stem_direction: -1, duration: "8"}).setStave(stave),
-    newNote({ clef: "treble", keys: ["c/4"], stem_direction: -1, duration: "16"}).setStave(stave),
+    newNote({ clef: "treble", keys: ["c/4"], stem_direction: -1, duration: "8"}).setStave(stave),
     newNote({ clef: "treble", keys: ["b/3"], stem_direction: -1, duration: "16"}).setStave(stave),
     newNote({ clef: "bass", keys: ["c/3"], stem_direction: 1, duration: "16"}).setStave(stave2),
     newNote({ clef: "bass",  keys: ["e/3"], stem_direction: 1, duration: "16"}).setStave(stave2),
@@ -546,10 +546,10 @@ Vex.Flow.Test.Beam.crossStaveComplex = function(options, contextBuilder) {
     setContext(ctx).draw();
 
   var notes = [
-    newNote({ clef: "bass", keys: ["c/3"], stem_direction: 1, duration: "128"}).setStave(stave2),
+    newNote({ clef: "bass", keys: ["c/3"], stem_direction: 1, duration: "8"}).setStave(stave2),
     newNote({ clef: "bass",  keys: ["e/3"], stem_direction: 1, duration: "16"}).setStave(stave2),
-    newNote({ clef: "treble", keys: ["b/3"], stem_direction: -1, duration: "16"}).setStave(stave),
-    newNote({ clef: "treble", keys: ["c/4"], stem_direction: -1, duration: "128"}).setStave(stave),
+    newNote({ clef: "treble", keys: ["b/3"], stem_direction: -1, duration: "8"}).setStave(stave),
+    newNote({ clef: "treble", keys: ["c/4"], stem_direction: -1, duration: "16"}).setStave(stave),
     newNote({ clef: "treble", keys: ["c/4"], stem_direction: -1, duration: "32"}).setStave(stave),
     newNote({ clef: "treble", keys: ["b/3"], stem_direction: -1, duration: "8"}).setStave(stave),
     newNote({ clef: "bass", keys: ["c/3"], stem_direction: 1, duration: "32"}).setStave(stave2),

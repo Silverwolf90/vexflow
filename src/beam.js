@@ -204,6 +204,16 @@ Vex.Flow.Beam = (function() {
         // Don't go all the way to the top (for thicker stems)
         var y_displacement = Vex.Flow.STEM_WIDTH;
 
+        // Determine necessary extension for cross-stave notes in the beam group
+        var crossStemExtension = 0;
+        if (note.getStemDirection() !== this.stem_direction) {
+          crossStemExtension = note.getGlyph().beam_count * 
+            (this.render_options.beam_width * 1.5) - y_displacement;
+        }
+
+        // Determine stem direction
+        var stem_direction = this.cross_stave ? note.getStemDirection() : this.stem_direction;
+
         note.drawStem({
           x_begin: x_px,
           x_end: x_px,
@@ -211,8 +221,8 @@ Vex.Flow.Beam = (function() {
           y_bottom: base_y_px,
           y_extend: y_displacement,
           stem_extension: Math.abs(base_y_px - (getSlopeY(x_px) + y_shift)) -
-                          Vex.Flow.Stem.HEIGHT,
-          stem_direction: this.stem_direction
+                          Vex.Flow.Stem.HEIGHT + crossStemExtension,
+          stem_direction: stem_direction
         });
       }
 
@@ -221,8 +231,8 @@ Vex.Flow.Beam = (function() {
         var beam_lines = [];
         var beam_started = false;
         var current_beam;
-
-        for (var i = 0; i < that.notes.length; ++i) {
+        debugger;
+      for (var i = 0; i < that.notes.length; ++i) {
           var note = that.notes[i];
           var ticks = note.getIntrinsicTicks();
 
@@ -263,7 +273,7 @@ Vex.Flow.Beam = (function() {
         return beam_lines;
       }
 
-      var valid_beam_durations = ["4", "8", "16", "32"];
+      var valid_beam_durations = ["4", "8", "16", "32", "64"];
 
       // Draw the beams.
       for (i = 0; i < valid_beam_durations.length; ++i) {

@@ -19,6 +19,7 @@ Vex.Flow.Test.Beam.Start = function() {
   Vex.Flow.Test.runTest("Lengthy Beam", Vex.Flow.Test.Beam.lenghty);
   Vex.Flow.Test.runTest("Outlier Beam", Vex.Flow.Test.Beam.outlier);
   Vex.Flow.Test.runTest("Cross Stave Beam", Vex.Flow.Test.Beam.crossStave);
+  Vex.Flow.Test.runTest("Complex Cross Stave Beams", Vex.Flow.Test.Beam.crossStaveComplex);
   Vex.Flow.Test.runTest("TabNote Beams Up", Vex.Flow.Test.Beam.tabBeamsUp);
   Vex.Flow.Test.runTest("TabNote Beams Down", Vex.Flow.Test.Beam.tabBeamsDown);
 }
@@ -489,21 +490,77 @@ Vex.Flow.Test.Beam.crossStave = function(options, contextBuilder) {
     setContext(ctx).draw();
 
   var notes = [
+    newNote({ clef: "bass", keys: ["c/3"], stem_direction: 1, duration: "8"}).setStave(stave2),
+    newNote({ clef: "bass",  keys: ["e/3"], stem_direction: 1, duration: "8"}).setStave(stave2),
+    newNote({ clef: "treble", keys: ["b/3"], stem_direction: -1, duration: "8"}).setStave(stave),
+    newNote({ clef: "treble", keys: ["c/4"], stem_direction: -1, duration: "8"}).setStave(stave),
+    newNote({ clef: "treble", keys: ["c/4"], stem_direction: -1, duration: "16"}).setStave(stave),
+    newNote({ clef: "treble", keys: ["b/3"], stem_direction: -1, duration: "16"}).setStave(stave),
     newNote({ clef: "bass", keys: ["c/3"], stem_direction: 1, duration: "16"}).setStave(stave2),
     newNote({ clef: "bass",  keys: ["e/3"], stem_direction: 1, duration: "16"}).setStave(stave2),
+
+    newNote({ clef: "bass", keys: ["c/3"], stem_direction: 1, duration: "32"}).setStave(stave2),
+    newNote({ clef: "bass",  keys: ["e/3"], stem_direction: 1, duration: "32"}).setStave(stave2),
+    newNote({ clef: "treble", keys: ["b/3"], stem_direction: -1, duration: "32"}).setStave(stave),
+    newNote({ clef: "treble", keys: ["c/4"], stem_direction: -1, duration: "32"}).setStave(stave),
+    newNote({ clef: "treble", keys: ["c/4"], stem_direction: -1, duration: "32"}).setStave(stave),
+    newNote({ clef: "treble", keys: ["b/3"], stem_direction: -1, duration: "32"}).setStave(stave),
+    newNote({ clef: "bass", keys: ["c/3"], stem_direction: 1, duration: "32"}).setStave(stave2),
+    newNote({ clef: "bass",  keys: ["e/3"], stem_direction: 1, duration: "32"}).setStave(stave2)
+  ];
+
+  var voice = new Vex.Flow.Voice({
+    num_beats: 4,
+    beat_value: 4,
+    resolution: Vex.Flow.RESOLUTION
+  }).setMode(Vex.Flow.Voice.Mode.SOFT);
+
+  voice.addTickables(notes);
+
+  var formatter = new Vex.Flow.Formatter().joinVoices([voice]).formatToStave([voice], stave);
+
+  var beam = new Vex.Flow.Beam(notes.slice(0, 4));
+  var beam2 = new Vex.Flow.Beam(notes.slice(4, 8));
+  var beam3 = new Vex.Flow.Beam(notes.slice(8, 16));
+  var beam4 = new Vex.Flow.Beam(notes.slice(12, 16));
+
+  notes.forEach(function(note) {
+      note.setContext(ctx).draw();
+  });
+
+  beam.setContext(ctx).draw();
+  beam2.setContext(ctx).draw();
+  beam3.setContext(ctx).draw();
+  //beam4.setContext(ctx).draw();
+
+  ok(true, "Cross Stave Test");
+}
+
+Vex.Flow.Test.Beam.crossStaveComplex = function(options, contextBuilder) {
+  var ctx = new contextBuilder(options.canvas_sel, 450, 300);
+  ctx.scale(0.9, 0.9); ctx.fillStyle = "#221"; ctx.strokeStyle = "#221";
+  ctx.font = " 10pt Arial";
+  var stave = new Vex.Flow.Stave(10, 10, 450).addClef('treble').
+    setContext(ctx).draw();
+  var stave2 = new Vex.Flow.Stave(10, 150, 450).addClef('bass').
+    setContext(ctx).draw();
+
+  var notes = [
+    newNote({ clef: "bass", keys: ["c/3"], stem_direction: 1, duration: "128"}).setStave(stave2),
+    newNote({ clef: "bass",  keys: ["e/3"], stem_direction: 1, duration: "16"}).setStave(stave2),
     newNote({ clef: "treble", keys: ["b/3"], stem_direction: -1, duration: "16"}).setStave(stave),
-    newNote({ clef: "treble", keys: ["c/4"], stem_direction: -1, duration: "16"}).setStave(stave),
-    newNote({ clef: "treble", keys: ["c/4"], stem_direction: -1, duration: "16"}).setStave(stave),
-    newNote({ clef: "treble", keys: ["b/3"], stem_direction: -1, duration: "16"}).setStave(stave),
-    newNote({ clef: "bass", keys: ["c/3"], stem_direction: 1, duration: "16"}).setStave(stave2),
-    newNote({ clef: "bass",  keys: ["e/3"], stem_direction: 1, duration: "16"}).setStave(stave2)
+    newNote({ clef: "treble", keys: ["c/4"], stem_direction: -1, duration: "128"}).setStave(stave),
+    newNote({ clef: "treble", keys: ["c/4"], stem_direction: -1, duration: "32"}).setStave(stave),
+    newNote({ clef: "treble", keys: ["b/3"], stem_direction: -1, duration: "8"}).setStave(stave),
+    newNote({ clef: "bass", keys: ["c/3"], stem_direction: 1, duration: "32"}).setStave(stave2),
+    newNote({ clef: "bass",  keys: ["e/3"], stem_direction: -1, duration: "8"}).setStave(stave)
   ];
 
   var voice = new Vex.Flow.Voice(Vex.Flow.Test.TIME4_4).
     setMode(Vex.Flow.Voice.Mode.SOFT);
   voice.addTickables(notes);
 
-  var formatter = new Vex.Flow.Formatter().joinVoices([voice]).format([voice], 300);
+  var formatter = new Vex.Flow.Formatter().joinVoices([voice]).formatToStave([voice], stave);
 
   var beam = new Vex.Flow.Beam(notes.slice(0, 4));
   var beam2 = new Vex.Flow.Beam(notes.slice(4, 8));

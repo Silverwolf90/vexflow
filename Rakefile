@@ -4,7 +4,7 @@
 require 'bundler/setup'
 require 'fileutils'
 require 'rake/testtask'
-require 'Time'
+require 'time'
 require 'erb'
 require 'uglifier'
 
@@ -41,8 +41,10 @@ base_sources = [
   "src/ghostnote.js",
   "src/notehead.js",
   "src/stem.js",
+  "src/stemmablenote.js",
   "src/stavenote.js",
   "src/tabnote.js",
+  "src/clefnote.js",
   "src/beam.js",
   "src/voice.js",
   "src/voicegroup.js",

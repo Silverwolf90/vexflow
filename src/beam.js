@@ -190,6 +190,7 @@ Vex.Flow.Beam = (function() {
 
       slope = best_slope;
 
+
       // Draw the stems
       for (i = 0; i < this.notes.length; ++i) {
         note = this.notes[i];
@@ -214,6 +215,23 @@ Vex.Flow.Beam = (function() {
         if (note.getStemDirection() !== this.stem_direction) {
           crossStemExtension = note.getGlyph().beam_count * 
             (this.render_options.beam_width * 1.5) - y_displacement;
+            debugger;
+
+            var beamDiff = 0;
+            var beamCount = note.getGlyph().beam_count;
+            var prevBeamCount = 0;
+            if (i > 0 && note.getGlyph().beam_count > 1) {
+              prevBeamCount = this.notes[i-1].getGlyph().beam_count;
+              beamDiff = Math.abs(prevBeamCount - beamCount);
+            }
+
+            if (prevBeamCount > beamCount) {
+              
+            }
+
+            if (beamDiff > 0) {
+              crossStemExtension -= beamDiff * (this.render_options.beam_width * 1.5);
+            }
         }
 
         // Determine stem direction
@@ -325,6 +343,8 @@ Vex.Flow.Beam = (function() {
         cross_first_y_px -= beam_width * 1.5;
         cross_last_y_px -= beam_width * 1.5;
       }
+
+
 
       return true;
     }

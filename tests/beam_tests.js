@@ -546,14 +546,16 @@ Vex.Flow.Test.Beam.crossStaveComplex = function(options, contextBuilder) {
     setContext(ctx).draw();
 
   var notes = [
-    newNote({ clef: "bass", keys: ["c/3"], stem_direction: 1, duration: "8"}).setStave(stave2),
-    newNote({ clef: "bass",  keys: ["e/3"], stem_direction: 1, duration: "16"}).setStave(stave2),
-    newNote({ clef: "treble", keys: ["b/3"], stem_direction: -1, duration: "8"}).setStave(stave),
-    newNote({ clef: "treble", keys: ["c/4"], stem_direction: -1, duration: "16"}).setStave(stave),
+    newNote({ clef: "bass", keys: ["c/3"], stem_direction: 1, duration: "16"}).setStave(stave2),
+    newNote({ clef: "bass", keys: ["c/3"], stem_direction: 1, duration: "16"}).setStave(stave2),
+    newNote({ clef: "bass",  keys: ["e/3"], stem_direction: 1, duration: "8"}).setStave(stave2),
+    newNote({ clef: "treble", keys: ["b/3"], stem_direction: -1, duration: "16"}).setStave(stave),
+    newNote({ clef: "treble", keys: ["c/4"], stem_direction: -1, duration: "8"}).setStave(stave),
     newNote({ clef: "treble", keys: ["c/4"], stem_direction: -1, duration: "32"}).setStave(stave),
-    newNote({ clef: "treble", keys: ["b/3"], stem_direction: -1, duration: "8"}).setStave(stave),
+    newNote({ clef: "treble", keys: ["b/3"], stem_direction: -1, duration: "16"}).setStave(stave),
     newNote({ clef: "bass", keys: ["c/3"], stem_direction: 1, duration: "32"}).setStave(stave2),
-    newNote({ clef: "bass",  keys: ["e/3"], stem_direction: -1, duration: "8"}).setStave(stave)
+    newNote({ clef: "bass",  keys: ["e/3"], stem_direction: -1, duration: "32"}).setStave(stave),
+    newNote({ clef: "bass",  keys: ["e/3"], stem_direction: -1, duration: "16"}).setStave(stave)
   ];
 
   var voice = new Vex.Flow.Voice(Vex.Flow.Test.TIME4_4).
@@ -562,8 +564,8 @@ Vex.Flow.Test.Beam.crossStaveComplex = function(options, contextBuilder) {
 
   var formatter = new Vex.Flow.Formatter().joinVoices([voice]).formatToStave([voice], stave);
 
-  var beam = new Vex.Flow.Beam(notes.slice(0, 4));
-  var beam2 = new Vex.Flow.Beam(notes.slice(4, 8));
+  var beam = new Vex.Flow.Beam(notes.slice(0, 5));
+  var beam2 = new Vex.Flow.Beam(notes.slice(5, 10));
 
   notes.forEach(function(note) {
       note.setContext(ctx).draw();

@@ -37,6 +37,7 @@ Vex.Flow.StaveNote = (function() {
       this.dot_shiftY = 0;
       this.keyProps = [];             // per-note properties
       this.keyStyles = [];            // per-note colors or gradients
+      this.note_heads = [];
 
       // Pull per-note location and other rendering properties.
       this.displaced = false;
@@ -81,12 +82,11 @@ Vex.Flow.StaveNote = (function() {
       // Drawing
       this.modifiers = [];
 
-      this.render_options = {
+      Vex.Merge(this.render_options, {
         glyph_font_scale: 35, // font size for note heads and rests
         stroke_px: 3,         // number of stroke px to the left and right of head
-        stroke_spacing: 10,    // spacing between strokes (TODO: take from stave)
-        annotation_spacing: 5 // spacing above note for annotations
-      };
+        stroke_spacing: 10    // spacing between strokes (TODO: take from stave)
+      });
 
       switch (this.duration) {
         case "w":                 // Whole note alias
@@ -101,7 +101,10 @@ Vex.Flow.StaveNote = (function() {
       if (note_struct.auto_stem) {
         // Figure out optimal stem direction based on given notes
         this.min_line = this.keyProps[0].line;
-        if (this.min_line < 3) {
+        this.max_line = this.keyProps[this.keyProps.length - 1].line;
+        var decider = (this.min_line + this.max_line) / 2;
+
+        if (decider < 3) {
           auto_stem_direction = 1;
         } else {
           auto_stem_direction = -1;
@@ -288,10 +291,6 @@ Vex.Flow.StaveNote = (function() {
       return { x: this.getAbsoluteX() + x, y: this.ys[index] };
     },
 
-    getGlyph: function() {
-      return this.glyph;
-    },
-
     setKeyStyle: function(index, style) {
       this.keyStyles[index] = style;
       return this;
@@ -337,6 +336,7 @@ Vex.Flow.StaveNote = (function() {
     addAnnotation: function(index, annotation) {
       return this.addModifier(index, annotation);
     },
+
 
     addDot: function(index) {
       var dot = new Vex.Flow.Dot();
@@ -410,7 +410,7 @@ Vex.Flow.StaveNote = (function() {
 
       // Begin and end positions for head.
       var x_begin = x;
-      var x_end = x + glyph.head_width;
+      var x_end = x + glyph.head_width - (Vex.Flow.STEM_WIDTH / 2);
 
       // Top and bottom Y values for stem.
       var y_top = null;
@@ -484,8 +484,7 @@ Vex.Flow.StaveNote = (function() {
         });
 
         var head_x = note_head.getAbsoluteX();
-
-        note_head.setContext(this.context).draw();
+        this.note_heads.push(note_head);
 
         // If note above/below the staff, draw the small staff
         if (line <= 0 || line >= 6) {
@@ -540,6 +539,10 @@ Vex.Flow.StaveNote = (function() {
           stem_direction: stem_direction
         });
       }
+
+      this.note_heads.forEach(function(note_head) {
+        note_head.setContext(this.context).draw();
+      }, this);
 
       // Now it's the flag's turn.
       if (glyph.flag && render_flag) {

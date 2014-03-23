@@ -7,24 +7,24 @@
 
 /** @constructor */
 Vex.Flow.TabNote = (function() {
-  function TabNote(tab_struct) {
-    if (arguments.length > 0) this.init(tab_struct);
+  function TabNote(tab_struct, draw_stem) {
+    if (arguments.length > 0) this.init(tab_struct, draw_stem);
   }
 
   var Stem = Vex.Flow.Stem;
 
   Vex.Inherit(TabNote, Vex.Flow.StemmableNote, {
-    init: function(tab_struct) {
+    init: function(tab_struct, draw_stem) {
       var superclass = Vex.Flow.TabNote.superclass;
       superclass.init.call(this, tab_struct);
 
       // Note properties
       this.positions = tab_struct.positions; // [{ str: X, fret: X }]
-      this.render_options = {
+      Vex.Merge(this.render_options, {
         glyph_font_scale: 30, // font size for note heads and rests
-        draw_stem: false,
-        draw_dots: false
-      };
+        draw_stem: draw_stem,
+        draw_dots: draw_stem
+      });
 
       this.glyph =
         Vex.Flow.durationToGlyph(this.duration, this.noteType);
@@ -56,11 +56,7 @@ Vex.Flow.TabNote = (function() {
     },
 
     hasStem: function() {
-      return this.glyph.stem;
-    },
-
-    getGlyph: function() {
-      return this.glyph;
+      return this.render_options.draw_stem;
     },
 
     addDot: function() {
@@ -164,6 +160,10 @@ Vex.Flow.TabNote = (function() {
       return {x: this.getAbsoluteX() + x, y: this.ys[index]};
     },
 
+    getLineForRest: function() {
+      return this.positions[0].str;
+    },
+
     // Pre-render formatting
     preFormat: function() {
       if (this.preFormatted) return;
@@ -173,7 +173,7 @@ Vex.Flow.TabNote = (function() {
     },
 
     getStemX: function() {
-      return this.getAbsoluteX() + this.x_shift + (this.glyph.head_width / 2);
+      return this.getCenterGlyphX();
     },
 
     getStemY: function(){

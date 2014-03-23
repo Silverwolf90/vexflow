@@ -25,6 +25,16 @@ Vex.Flow.StemmableNote = (function(){
       return Stem.HEIGHT + this.stem_extension;
     },
 
+    getBeamCount: function(){
+      var glyph = this.getGlyph();
+
+      if (glyph) {
+        return glyph.beam_count;
+      } else {
+        return 0;
+      }
+    },
+
     // Determine minimum length of stem
     getStemMinumumLength: function() {
       var length = this.duration == "w" || this.duration == "1" ? 0 : 20;
@@ -92,6 +102,11 @@ Vex.Flow.StemmableNote = (function(){
       return stem_x;
     },
 
+    // Used for TabNote stems and Stemlets over rests
+    getCenterGlyphX: function(){
+      return this.getAbsoluteX() + this.x_shift + (this.glyph.head_width / 2);
+    },
+
     // Manuallly set note stem length
     setStemLength: function(height) {
       this.stem_extension = (height - Stem.HEIGHT);
@@ -129,6 +144,26 @@ Vex.Flow.StemmableNote = (function(){
     setBeam: function(beam) {
       this.beam = beam;
       return this;
+    },
+
+    getYForTopText: function(text_line) {
+      var extents = this.getStemExtents();
+      if (this.hasStem()) {
+        return Vex.Min(this.stave.getYForTopText(text_line),
+            extents.topY - (this.render_options.annotation_spacing * (text_line + 1)));
+      } else {
+        return this.stave.getYForTopText(text_line);
+      }
+    },
+
+    getYForBottomText: function(text_line) {
+      var extents = this.getStemExtents();
+      if (this.hasStem()) {
+        return Vex.Max(this.stave.getYForTopText(text_line),
+          extents.baseY + (this.render_options.annotation_spacing * (text_line)));
+      } else {
+        return this.stave.getYForBottomText(text_line);
+      }
     },
 
     drawStem: function(stem_struct){

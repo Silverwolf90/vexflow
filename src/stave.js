@@ -39,25 +39,28 @@ Vex.Flow.Stave = (function() {
         spacing_between_lines_px: 10, // in pixels
         space_above_staff_ln: 4,      // in staff lines
         space_below_staff_ln: 4,      // in staff lines
-        top_text_position: 1,         // in staff lines
-        bottom_text_position: 6       // in staff lines
+        top_text_position: 1          // in staff lines
       };
       this.bounds = {x: this.x, y: this.y, w: this.width, h: 0};
       Vex.Merge(this.options, options);
 
-      this.options.line_config = [];
-      for (var i = 0; i < this.options.num_lines; i++) {
-        this.options.line_config.push({ visible: true });
-      }
+      this.resetLines();
 
-      this.height =
-        (this.options.num_lines + this.options.space_above_staff_ln) *
-         this.options.spacing_between_lines_px;
       this.modifiers.push(
           new Vex.Flow.Barline(Vex.Flow.Barline.type.SINGLE, this.x)); // beg bar
       this.modifiers.push(
           new Vex.Flow.Barline(Vex.Flow.Barline.type.SINGLE,
           this.x + this.width)); // end bar
+    },
+
+    resetLines: function() {
+      this.options.line_config = [];
+      for (var i = 0; i < this.options.num_lines; i++) {
+        this.options.line_config.push({visible: true});
+      }
+      this.height = (this.options.num_lines + this.options.space_above_staff_ln) *
+         this.options.spacing_between_lines_px;
+      this.options.bottom_text_position = this.options.num_lines + 1;
     },
 
     setNoteStartX: function(x) { this.start_x = x; return this; },
@@ -77,6 +80,11 @@ Vex.Flow.Stave = (function() {
     getContext: function() { return this.context; },
     getX: function() { return this.x; },
     getNumLines: function() { return this.options.num_lines; },
+    setNumLines: function(lines) {
+      this.options.num_lines = parseInt(lines, 10);
+      this.resetLines();
+      return this;
+    },
     setY: function(y) { this.y = y; return this; },
 
     setWidth: function(width) {
@@ -84,6 +92,10 @@ Vex.Flow.Stave = (function() {
       // reset the x position of the end barline
       this.modifiers[1].setX(this.x + this.width);
       return this;
+    },
+
+    getWidth: function() {
+      return this.width;
     },
 
     setMeasure: function(measure) { this.measure = measure; return this; },
@@ -161,6 +173,12 @@ Vex.Flow.Stave = (function() {
       return this;
     },
 
+    // Text functions
+    setText: function(text, position, options) {
+      this.modifiers.push(new Vex.Flow.StaveText(text, position, options));
+      return this;
+    },
+
     getHeight: function() {
       return this.height;
     },
@@ -181,6 +199,10 @@ Vex.Flow.Stave = (function() {
          (options.space_below_staff_ln * spacing);
 
       return score_bottom;
+    },
+
+    getBottomLineY: function() {
+      return this.getYForLine(this.options.num_lines);
     },
 
     getYForLine: function(line) {
@@ -262,6 +284,10 @@ Vex.Flow.Stave = (function() {
     addTimeSignature: function(timeSpec, customPadding) {
       this.addModifier(new Vex.Flow.TimeSignature(timeSpec, customPadding));
       return this;
+    },
+
+    addEndTimeSignature: function(timeSpec, customPadding) {
+      this.addEndModifier(new Vex.Flow.TimeSignature(timeSpec, customPadding));
     },
 
     addTrebleGlyph: function() {

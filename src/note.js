@@ -34,6 +34,7 @@ Vex.Flow.Note = (function() {
       this.noteType = initData.type;
       this.setIntrinsicTicks(initData.ticks);
       this.modifiers = [];
+      this.glyph = Vex.Flow.durationToGlyph(this.duration, this.noteType);
 
       if (this.positions &&
           (typeof(this.positions) != "object" || !this.positions.length)) {
@@ -63,6 +64,9 @@ Vex.Flow.Note = (function() {
       // Drawing
       this.context = null;
       this.stave = null;
+      this.render_options = {
+        annotation_spacing: 5
+      };
     },
 
     setPlayNote: function(note) { this.playNote = note; return this; },
@@ -96,6 +100,7 @@ Vex.Flow.Note = (function() {
     setExtraRightPx: function(x) { this.extraRightPx = x; return this; },
     shouldIgnoreTicks: function() { return this.ignore_ticks; },
     getLineNumber: function() { return 0; },
+    getGlyph: function() { return this.glyph; },
 
     setYs: function(ys) { this.ys = ys; return this; },
     getYs: function() {
@@ -103,7 +108,6 @@ Vex.Flow.Note = (function() {
           "No Y-values calculated for this note.");
       return this.ys;
     },
-
     getYForTopText: function(text_line) {
       if (!this.stave) throw new Vex.RERR("NoStave",
           "No stave attached to this note.");
@@ -132,9 +136,11 @@ Vex.Flow.Note = (function() {
 
     getDuration: function() { return this.duration; },
     isDotted: function() { return (this.dots > 0); },
+    hasStem: function() { return false; },
     getDots: function() { return this.dots; },
     getNoteType: function() { return this.noteType; },
     setModifierContext: function(mc) { this.modifierContext = mc; return this; },
+    setBeam: function() { return this; }, // ignore parameters
 
     addModifier: function(modifier, index) {
       modifier.setNote(this);
@@ -187,13 +193,24 @@ Vex.Flow.Note = (function() {
       return this;
     },
 
+    setX: function(x) {
+      if (isNaN(x)) {
+        throw new Vex.RERR('Invalid x coordinate attempted: ' + x.toString());
+      }
+      this.x = x; return this;
+    },
+
     getX: function() {
+      if (this.x) return this.x;
+
       if (!this.tickContext) throw new Vex.RERR("NoTickContext",
           "Note needs a TickContext assigned for an X-Value");
       return this.tickContext.getX() + this.x_shift;
     },
 
     getAbsoluteX: function() {
+      if (this.x) return this.x;
+
       if (!this.tickContext) throw new Vex.RERR("NoTickContext",
           "Note needs a TickContext assigned for an X-Value");
 

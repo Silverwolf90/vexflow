@@ -11,8 +11,20 @@ Vex.Flow.NoteHead = (function() {
   };
 
   // Draw slashnote head manually. No glyph exists for this.
-  function drawSlashNoteHead(ctx, duration, x, y) {
+  function drawSlashNoteHead(ctx, duration, x, y, stem_direction) {
     var width = 15 + (Vex.Flow.STEM_WIDTH / 2);
+    ctx.setLineWidth(Vex.Flow.STEM_WIDTH);
+
+    var fill = false;
+    if (duration != 1 &&
+        duration != 2 &&
+        duration != "h" &&
+        duration != "w") {
+      fill = true;
+    }
+
+    if (!fill) x -= (Vex.Flow.STEM_WIDTH / 2) * stem_direction;
+
     ctx.beginPath();
     ctx.moveTo(x, y + 11);
     ctx.lineTo(x, y + 1);
@@ -21,15 +33,12 @@ Vex.Flow.NoteHead = (function() {
     ctx.lineTo(x, y + 11);
     ctx.closePath();
 
-    // only fill if quarter note or smaller
-    if (duration != 1 &&
-        duration != 2 &&
-        duration != "h" &&
-        duration != "w") {
-      ctx.fill();
+    if (fill) {
+       ctx.fill();
     } else {
       ctx.stroke();
     }
+    ctx.setLineWidth(1);
   }
 
   NoteHead.prototype = {
@@ -59,7 +68,7 @@ Vex.Flow.NoteHead = (function() {
       }
       this.glyph_font_scale = head_options.glyph_font_scale;
       this.context = null;
-      this.key_style = null;
+      this.key_style = head_options.key_style;
       this.slashed = head_options.slashed;
     },
 
@@ -93,9 +102,8 @@ Vex.Flow.NoteHead = (function() {
       var key_style = this.key_style;
 
       if (this.note_type == "s") {
-        var displacement = Vex.Flow.STEM_WIDTH / 2;
         drawSlashNoteHead(ctx, this.duration,
-          head_x + (stem_direction == 1 ? -displacement : displacement), y);
+          head_x, y, stem_direction);
       } else {
         if (key_style) {
           ctx.save();

@@ -26,8 +26,7 @@ Vex.Flow.Stem = (function() {
   Stem.prototype = {
     init: function(options) {
       // Default notehead x bounds
-      this.x_begin = options.x_begin || 0;
-      this.x_end = options.x_end || 0;
+      this.x = options.x;
 
       // Y bounds for top/bottom most notehead
       this.y_top = options.y_top || 0;
@@ -49,10 +48,13 @@ Vex.Flow.Stem = (function() {
     },
 
     // Set the x bounds for the default notehead
-    setNoteHeadXBounds: function(x_begin, x_end) {
-      this.x_begin = x_begin;
-      this.x_end = x_end;
-      return this;
+    setX: function(x){
+      this.x = x;
+      return;
+    },
+
+    getX: function(x){
+      return this.x;
     },
 
     // Set the direction of the stem in relation to the noteheads
@@ -120,16 +122,13 @@ Vex.Flow.Stem = (function() {
       if (this.hide) return;
 
       var ctx = this.context;
-      var stem_x, stem_y;
+      var stem_x = this.getX();
+      var stem_y;
       var stem_direction = this.stem_direction;
 
       if (stem_direction == Stem.DOWN) {
-        // Down stems are rendered to the left of the head.
-        stem_x = this.x_begin + (Stem.WIDTH / 2);
         stem_y = this.y_top + 2;
       } else {
-        // Up stems are rendered to the right of the head.
-        stem_x = this.x_end + (Stem.WIDTH / 2);
         stem_y = this.y_bottom - 2;
       }
 

@@ -192,7 +192,7 @@ Vex.Flow.Beam = (function() {
         var top_y_px = y_extents.topY;
 
         // For harmonic note heads, shorten stem length by 3 pixels
-        base_y_px += this.stem_direction * note.glyph.stem_offset;
+        base_y_px += this.stem_direction * (note.glyph.stem_offset || 0);
 
         // Don't go all the way to the top (for thicker stems)
         var y_displacement = Vex.Flow.STEM_WIDTH;
@@ -214,8 +214,7 @@ Vex.Flow.Beam = (function() {
 
             // Draw Stemlet
             note.setStem(new Vex.Flow.Stem({
-              x_begin: centerGlyphX,
-              x_end: centerGlyphX,
+              x: centerGlyphX,
               y_bottom: this.stem_direction === 1 ? end_y : start_y,
               y_top: this.stem_direction === 1 ? start_y : end_y,
               y_extend: y_displacement,
@@ -233,8 +232,7 @@ Vex.Flow.Beam = (function() {
         var stemHeight = note.stem.getDefaultHeight();
 
         note.setStem(new Vex.Flow.Stem({
-          x_begin: x_px - (Vex.Flow.STEM_WIDTH/2),
-          x_end: x_px,
+          x: x_px,
           y_top: this.stem_direction === 1 ? top_y_px : base_y_px,
           y_bottom: this.stem_direction === 1 ? base_y_px :  top_y_px ,
           y_extend: y_displacement,
@@ -289,7 +287,7 @@ Vex.Flow.Beam = (function() {
             beam_started = true;
           } else {
             current_beam = beam_lines[beam_lines.length - 1];
-            current_beam.end = stem_x;
+            current_beam.end = stem_x - (Stem.WIDTH/2);
 
             // Should break secondary beams on note
             var should_break = this.break_on_indices.indexOf(i) !== -1;

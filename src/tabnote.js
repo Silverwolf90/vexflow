@@ -39,13 +39,14 @@ Vex.Flow.TabNote = (function() {
         draw_stem_through_stave: false
       });
 
-      this.glyph =
+      var glyphData = 
         Vex.Flow.durationToGlyph(this.duration, this.noteType);
       if (!this.glyph) {
         throw new Vex.RuntimeError("BadArguments",
             "Invalid note initialization data (No glyph found): " +
             JSON.stringify(tab_struct));
       }
+      this.glyph = new Vex.Flow.Glyph(glyphData.glyph_name);
 
       this.buildStem();
 
@@ -108,6 +109,10 @@ Vex.Flow.TabNote = (function() {
         this.glyphs.push(glyph);
         this.width = (glyph.width > this.width) ? glyph.width : this.width;
       }
+    },
+
+    getNoteHeadWidth: function(){
+      return this.glyph.width;
     },
 
     // Set the `stave` to the note
@@ -287,10 +292,6 @@ Vex.Flow.TabNote = (function() {
         var stem_lines = getPartialStemLines(stem_y, unused_strings,
                               this.getStave(), this.getStemDirection());
 
-        // Fine tune x position to match default stem
-        if (!this.beam || this.getStemDirection() === 1) {
-          stem_x += (Stem.WIDTH / 2);
-        }
 
         ctx.save();
         ctx.setLineWidth(Stem.WIDTH);
@@ -350,8 +351,7 @@ Vex.Flow.TabNote = (function() {
       var stem_y = this.getStemY();
       if (render_stem) {
         this.drawStem({
-          x_begin: stem_x,
-          x_end: stem_x,
+          x: stem_x,
           y_top: stem_y,
           y_bottom: stem_y,
           y_extend: 0,

@@ -48,7 +48,7 @@ Vex.Flow.Glyph = (function() {
     if (options) this.setOptions(options); else this.reset();
   }
 
-  Glyph.DEBUG = true;
+  Glyph.DEBUG = false;
 
   function L() { if (Glyph.DEBUG) Vex.L("Vex.Flow.Glyph", arguments); }
 
@@ -72,7 +72,9 @@ Vex.Flow.Glyph = (function() {
       this.scale = this.point * 72 / (this.options.font.resolution * 100);
 
       if (this.metrics.advanceWidth){
-        this.setWidth(this.metrics.advanceWidth * this.scale);
+        var width = this.metrics.advanceWidth * this.scale;
+        var roundedWidth = Math.round(width * 10) / 10;
+        this.setWidth(roundedWidth);
       } else {
         this.setWidth((this.metrics.x_max - this.metrics.x_min) * this.scale);
       }

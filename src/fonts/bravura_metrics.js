@@ -149,44 +149,36 @@ Vex.Flow.Font.Bravura.Metrics = {
   //NOTEHEADS
   //Normal
   "noteheadDoubleWhole": {
-    width: 25,
     stem_offset: 0,
     size: 35
   },
   "noteheadWhole": {
-    width: 16,
     stem_offset: 0,
     size: 35
   },
   "noteheadHalf": {
-    width: 11,
     stem_offset: 0,
     size: 35
   },
   "noteheadBlack": {
-    width: 11,
     stem_offset: 0,
     size: 35
   },
 
   // Diamond
   "noteheadDiamondDoubleWhole": {
-    width: 22,
     stem_offset: 0,
     size: 35
   },
   "noteheadDiamondWhole": {
-    width: 16,
     stem_offset: 0,
     size: 35
   },
   "noteheadDiamondHalf": {
-    width: 10,
     stem_offset: 0,
     size: 35
   },
   "noteheadDiamondBlack": {
-    width: 10,
     stem_offset: 2,
     size: 35
   },
@@ -207,27 +199,22 @@ Vex.Flow.Font.Bravura.Metrics = {
 
   // X
   "noteheadXDoubleWhole": {
-    width: 22,
     stem_offset: 0,
     size: 35
   },
   "noteheadXWhole": {
     stem_offset: -3,
     size: 35,
-    width: 16
   },
   "noteheadXHalf": {
     stem_offset: -3,
     size: 35,
-    width: 10
   },
   "noteheadXBlack": {
-    width: 10,
     stem_offset: -3,
     size: 35
   },
   "noteheadXOrnate": {
-    width: 10,
     stem_offset: 0,
     size: 35
   },
@@ -235,61 +222,48 @@ Vex.Flow.Font.Bravura.Metrics = {
   
   // Slash
   "noteheadSlashDoubleWhole": { // Doesn't exist in SMuFL
-    width: 15,
     stem_offset: 0,
     size: 35
   },
   "noteheadSlashWhiteWhole": {
-    width: 15,
     stem_offset: 0,
     size: 35
   },
   "noteheadSlashWhiteHalf": {
-    width: 15,
     stem_offset: 0,
     size: 35
   },
   "noteheadSlashHorizontalEnds": {
-    width: 15,
     stem_offset: 0,
     size: 35
   },
 
   // RESTS
   "restDoubleWhole": {
-    width: 24,
     size: 35
   },
   "restWhole" : {
-    width: 12,
     size: 35
   },
   "restHalf" : {
-    width: 12,
     size: 35
   },
   "restQuarter" : {
-    width: 8,
     size: 35
   },
   "rest8th": {
-    width: 8,
     size: 35
   },
   "rest16th": {
-    width: 13,
     size: 35
   },
   "rest32nd": {
-    width: 16,
     size: 35
   },
   "rest64th": {
-    width: 18,
     size: 35
   },
   "rest128th": {
-    width: 20,
     size: 35
   },
 

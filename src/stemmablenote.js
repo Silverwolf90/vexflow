@@ -117,12 +117,12 @@ Vex.Flow.StemmableNote = (function(){
     // Get the `x` coordinate of the stem
     getStemX: function() {
       var x_begin = this.getAbsoluteX() + this.x_shift;
-      var x_end = this.getAbsoluteX() + this.x_shift + this.glyph.width;
+      var x_end = this.getAbsoluteX() + this.x_shift + this.getNoteHeadWidth();
 
       var stem_x = this.stem_direction == Stem.DOWN ?
         x_begin : x_end;
 
-      stem_x -= ((Stem.WIDTH / 2) * this.stem_direction);
+      stem_x -= ((Stem.WIDTH / 3) * this.stem_direction);
 
       return stem_x;
     },
@@ -130,7 +130,7 @@ Vex.Flow.StemmableNote = (function(){
     // Get the `x` coordinate for the center of the glyph.
     // Used for `TabNote` stems and stemlets over rests
     getCenterGlyphX: function(){
-      return this.getAbsoluteX() + this.x_shift + (this.glyph.width / 2);
+      return this.getAbsoluteX() + this.x_shift + (this.getNoteHeadWidth() / 2);
     },
 
     // Get the stem extension for the current duration

@@ -38263,7 +38263,7 @@ Vex.Flow.Font.Bravura = {
         "yMax":1901.578125,
         "xMax":1159.671875
     },
-    "resolution":700,
+    "resolution":723,
     "descender":-2066,
     "familyName":"Bravura",
     "lineHeight":4093,

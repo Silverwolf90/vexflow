@@ -33,7 +33,6 @@ Vex.Flow.KeySignature = (function() {
     init: function(key_spec) {
       KeySignature.superclass.init();
 
-      this.glyphFontScale = 38; // TODO(0xFE): Should this match StaveNote?
       this.accList = Vex.Flow.keySignature(key_spec);
     },
 
@@ -42,7 +41,7 @@ Vex.Flow.KeySignature = (function() {
     // width will be added to the initial accidental for optimal spacing.
     addAccToStave: function(stave, acc, next) {
       var glyph_data = Vex.Flow.accidentalCodes(acc.type);
-      var glyph = new Vex.Flow.Glyph(glyph_data.glyph_name, this.glyphFontScale);
+      var glyph = new Vex.Flow.Glyph(glyph_data.glyph_name);
 
       // Determine spacing between current accidental and the next accidental
       var extra_width = 0;

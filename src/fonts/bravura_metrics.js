@@ -657,10 +657,10 @@ Vex.Flow.Font.Bravura.Metrics = {
 
   // REPEATS
   "coda": {
-    size: 35
+    size: 23
   },
   "segno":{
-    size: 35
+    size: 30
   },
 
   //MULTI-LINE SEGMENTS

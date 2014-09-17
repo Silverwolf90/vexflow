@@ -88,6 +88,10 @@ Vex.Flow.Glyph = (function() {
       return this.width;
     },
 
+    getCenterWidth: function(){
+      return this.width / 2;
+    },
+
     getMetrics: function() {
       if (!this.metrics) throw new Vex.RuntimeError("BadGlyph", "Glyph " +
           this.glyph_name + " is not initialized.");

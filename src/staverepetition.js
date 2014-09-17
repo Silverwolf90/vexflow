@@ -31,7 +31,8 @@ Vex.Flow.Repetition = (function() {
       this.symbol_type = type;
       this.x = x;
       this.x_shift = 0;
-      this.y_shift = y_shift;
+      this.line = 1.5;
+      this.y_shift = y_shift || 0;
       this.font = {
         family: "times",
         size: 12,
@@ -42,6 +43,7 @@ Vex.Flow.Repetition = (function() {
     getCategory: function() { return "repetitions"; },
     setShiftX: function(x) { this.x_shift = x; return this; },
     setShiftY: function(y) { this.y_shift = y; return this; },
+    setLine: function(line) { this.line = line; },
 
     draw: function(stave, x) {
       switch (this.symbol_type) {
@@ -89,18 +91,22 @@ Vex.Flow.Repetition = (function() {
       if (!stave.context) throw new Vex.RERR("NoCanvasContext",
           "Can't draw stave without canvas context.");
 
-      var y = stave.getYForTopText(stave.options.num_lines) + this.y_shift;
-      Vex.Flow.renderGlyph(stave.context, this.x + x + this.x_shift,
-                           y + 25, "coda", true);
+      var y = stave.getYForTopText(this.line) + this.y_shift;
+      var codaGlyph = new Vex.Flow.Glyph('coda');
+
+      x += this.x + this.x_shift - codaGlyph.getCenterWidth();
+
+      codaGlyph.render(stave.context, x, y);
+
       return this;
     },
 
     drawSignoFixed: function(stave, x) {
       if (!stave.context) throw new Vex.RERR("NoCanvasContext",
           "Can't draw stave without canvas context.");
-      var y = stave.getYForTopText(stave.options.num_lines) + this.y_shift;
+      var y = stave.getYForTopText(this.line) + this.y_shift;
       Vex.Flow.renderGlyph(stave.context, this.x + x + this.x_shift,
-                           y + 25, "segno", true);
+                           y, "segno", true);
       return this;
     },
 
@@ -117,19 +123,19 @@ Vex.Flow.Repetition = (function() {
       if (this.symbol_type == Vex.Flow.Repetition.type.CODA_LEFT) {
           // Offset Coda text to right of stave beginning
         text_x = this.x + stave.options.vertical_bar_width;
-        symbol_x = text_x + ctx.measureText(text).width + 12;
+        symbol_x = text_x + ctx.measureText(text).width + 6;
       } else {
           // Offset Signo text to left stave end
         symbol_x = this.x + x + stave.width - 5 + this.x_shift;
-        text_x = symbol_x - + ctx.measureText(text).width - 12;
+        text_x = symbol_x - + ctx.measureText(text).width - 7;
       }
-      var y = stave.getYForTopText(stave.options.num_lines) + this.y_shift;
+      var y = stave.getYForTopText(this.line) + this.y_shift;
       if (draw_coda) {
         var glyph = new Vex.Flow.Glyph("coda");
         glyph.render(ctx, symbol_x, y);
       }
 
-      ctx.fillText(text, text_x, y + 5);
+      ctx.fillText(text, text_x, y);
       ctx.restore();
 
       return this;

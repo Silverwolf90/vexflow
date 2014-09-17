@@ -226,7 +226,7 @@ Vex.Flow.Test.Stave.drawVoltaTest = function(options, contextBuilder) {
   // bar 1
   var mm1 = new Vex.Flow.Stave(10, 50, 125);
   mm1.setBegBarType(Vex.Flow.Barline.type.REPEAT_BEGIN);
-  mm1.setRepetitionTypeLeft(Vex.Flow.Repetition.type.SEGNO_LEFT, -18);
+  mm1.setRepetitionTypeLeft(Vex.Flow.Repetition.type.SEGNO_LEFT, -25);
   mm1.addClef("treble");
   mm1.addKeySignature("A")
   mm1.setMeasure(1);
@@ -309,7 +309,7 @@ Vex.Flow.Test.Stave.drawVoltaTest = function(options, contextBuilder) {
   // bar 8 - juxtapose eighth measure
   var mm8 = new Vex.Flow.Stave(mm7.width + mm7.x, mm1.y, 60);
   mm8.setEndBarType(Vex.Flow.Barline.type.DOUBLE);
-  mm8.setRepetitionTypeRight(Vex.Flow.Repetition.type.DS_AL_CODA, 25);
+  mm8.setRepetitionTypeRight(Vex.Flow.Repetition.type.DS_AL_CODA);
   mm8.setMeasure(8);
   mm8.setContext(ctx).draw();
   var notesmm8 = [
@@ -321,7 +321,7 @@ Vex.Flow.Test.Stave.drawVoltaTest = function(options, contextBuilder) {
   // bar 9 - juxtapose ninth measure
   var mm9 = new Vex.Flow.Stave(mm8.width + mm8.x + 20, mm1.y, 125);
   mm9.setEndBarType(Vex.Flow.Barline.type.END);
-  mm9.setRepetitionTypeLeft(Vex.Flow.Repetition.type.CODA_LEFT, 25);
+  mm9.setRepetitionTypeLeft(Vex.Flow.Repetition.type.CODA_LEFT);
   mm9.addClef("treble");
   mm9.addKeySignature("A");
   mm9.setMeasure(9);

@@ -69,11 +69,12 @@ Vex.Flow.Glyph = (function() {
 
     reset: function() {
       this.metrics = Vex.Flow.FontLoader.loadGlyphMetrics(this.glyph_name, this.options.cache);
-      this.scale = this.point * 72 / (this.options.font.resolution * 100);
 
       if (this.metrics.advanceWidth){
+        this.scale = 1 / this.options.font.resolution * this.point;
         this.setWidth(this.metrics.advanceWidth * this.scale);
       } else {
+        this.scale = this.point * 72 / (this.options.font.resolution * 100);
         this.setWidth((this.metrics.x_max - this.metrics.x_min) * this.scale);
       }
     },
@@ -104,7 +105,6 @@ Vex.Flow.Glyph = (function() {
     },
 
     hasRightOrigin: function(){
-      debugger;
       return Vex.Flow.FontLoader.getHorizontalOriginPosition(this.glyph_name) === "right";
     },
 

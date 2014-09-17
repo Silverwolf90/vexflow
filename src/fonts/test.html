@@ -56,14 +56,14 @@
 
   <script src="opentype.js"></script>
   <script src="../../tests/support/jquery.js"></script>
-  <script src="http//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
 
   <!-- VexFlow Sources -->
   <script src="../header.js"></script>
   <script src="../vex.js"></script>
   <script src="../flow.js"></script>
   <script src="../fraction.js"></script>
-  <script src="../fonts/vexflow_font.js"></script>
+  <script src="../fonts/gonville_font.js"></script>
   <script src="../fonts/gonville_metrics.js"></script>
   <script src="../glyph.js"></script>
   <script src="../tables.js"></script>
@@ -152,7 +152,7 @@
     var glyphNameCodepointMap = {};
     var codepoints = [];
     var sortedGlyphNames = [];
-    var usedGlyphNames = Object.keys(Vex.Flow.Gonville.Metrics);
+    var usedGlyphNames = Object.keys(Vex.Flow.Font.Gonville.Metrics);
 
     usedGlyphNames.forEach(function(glyphName){
       var codepoint = getCodepointForName(glyphName);
@@ -185,20 +185,22 @@
           glyphs[sortedGlyphNames[index]] = glyph;
         });
 
+        debugger;
+
         var font = {
           "glyphs": glyphs,
           "cssFontWeight":"normal",
-          "ascender":1903,
+          "ascender": font.ascender,
           "underlinePosition":-125,
           "cssFontStyle":"normal",
           "boundingBox":{
-            "yMin":-2065.375,
-              "xMin":-695.53125,
-              "yMax":1901.578125,
-              "xMax":1159.671875
+            "yMin":font.tables.head.yMin,
+              "xMin":font.tables.head.xMin,
+              "yMax":font.tables.head.yMax,
+              "xMax":font.tables.head.xMax
           },
-          "resolution":750,
-          "descender":-2066,
+          "resolution":1000,
+          "descender": font.descender,
           "familyName":"Bravura",
           "lineHeight":4093,
           "underlineThickness":50
@@ -206,16 +208,31 @@
 
         $("textarea").html(JSON.stringify(font, undefined, 4));
 
+        var scale = 1 / font.resolution * 40;
+
         var x = 20;
         var y = 100;
         Object.keys(glyphs).forEach(function(glyphName){
           console.log(glyphName);
           var glyph = glyphs[glyphName];
+
+          var width = glyph.advanceWidth * scale;  
           if (x > 1600){
             x = 0;
             y += 60;
           }
           glyph.draw(ctx, x, y, 40);
+
+          debugger;
+          ctx.save();
+          ctx.beginPath();
+          ctx.strokeStyle = "red";
+          ctx.moveTo(x, y);
+          ctx.lineTo(x + width, y);
+          ctx.stroke();
+          ctx.closePath();
+          ctx.restore();
+
           x += 50;
         });
       }

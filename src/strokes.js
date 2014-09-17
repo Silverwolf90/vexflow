@@ -128,13 +128,13 @@ Vex.Flow.Stroke = (function() {
       switch (this.type) {
         case Stroke.Type.BRUSH_DOWN:
           arrow = "arrowheadBlackUp";
-          arrow_shift_x = -3;
+          arrow_shift_x = -3.5;
           arrow_y = topY - (line_space / 2) + 10;
           botY += (line_space / 2);
           break;
         case Stroke.Type.BRUSH_UP:
           arrow = "arrowheadBlackDown";
-          arrow_shift_x = 0.5;
+          arrow_shift_x = -3.5;
           arrow_y = botY + (line_space / 2);
           topY -= (line_space / 2);
           break;

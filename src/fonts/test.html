@@ -132,110 +132,182 @@
   <script src="../textdynamics.js"></script>
   <script>
 
+  var METADATA;
   $.getJSON('glyphnames.json', function(glyphNames){
-
-    function getCodepointForName(name){
-      var glyphData = glyphNames[name];
-      if (!glyphData) {
-        return false;
+    $.getJSON('bravura_metadata.json', function(metadata){
+      METADATA = metadata;
+      function getCodepointForName(name){
+        var glyphData = glyphNames[name];
+        if (!glyphData) {
+          return false;
+        }
+        var codepoint = glyphData.codepoint;
+        return codepoint;
       }
-      var codepoint = glyphData.codepoint;
-      return codepoint;
-    }
 
-    function getNameForCodepoint(codepoint){
-      return _.find(Object.keys(glyphNames), function(name){
-        return glyphNames[name].codepoint === codepoint;
+      function getNameForCodepoint(codepoint){
+        return _.find(Object.keys(glyphNames), function(name){
+          return glyphNames[name].codepoint === codepoint;
+        });
+      }
+
+      var glyphNameCodepointMap = {};
+      var codepoints = [];
+      var sortedGlyphNames = [];
+      var usedGlyphNames = Object.keys(Vex.Flow.Font.Gonville.Metrics);
+
+      usedGlyphNames.forEach(function(glyphName){
+        var codepoint = getCodepointForName(glyphName);
+        if (!codepoint) return;
+        glyphNameCodepointMap[glyphName] = codepoint;
+        codepoints.push(codepoint);
+        sortedGlyphNames.push(glyphName); 
       });
-    }
-
-    var glyphNameCodepointMap = {};
-    var codepoints = [];
-    var sortedGlyphNames = [];
-    var usedGlyphNames = Object.keys(Vex.Flow.Font.Gonville.Metrics);
-
-    usedGlyphNames.forEach(function(glyphName){
-      var codepoint = getCodepointForName(glyphName);
-      if (!codepoint) return;
-      glyphNameCodepointMap[glyphName] = codepoint;
-      codepoints.push(codepoint);
-      sortedGlyphNames.push(glyphName); 
-    });
 
 
-    var ctx = document.getElementById("draw").getContext('2d');
+      var ctx = document.getElementById("draw").getContext('2d');
 
-    opentype.load('Bravura.otf', function (err, font) {
-      if (err) {
-        alert('Font could not be loaded: ' + err);
-      } else {
+      opentype.load('Bravura.otf', function (err, font) {
+        if (err) {
+          alert('Font could not be loaded: ' + err);
+        } else {
 
-        var glyphIndices = codepoints.reduce(function(indices, codepoint){
-          var index = font.cffEncoding.charset.indexOf("uni" + codepoint.substr(2));
-          return indices.concat([index]);
-        }, []);
+          var glyphIndices = codepoints.reduce(function(indices, codepoint){
+            var index = font.cffEncoding.charset.indexOf("uni" + codepoint.substr(2));
+            return indices.concat([index]);
+          }, []);
 
-        var glyphs = {};
+          var glyphs = {};
 
-        glyphIndices.forEach(function(glyphIndex, index){
-          var glyph = font.glyphs[glyphIndex];
-          glyph.font = {
-            unitsPerEm: 1000
+          glyphIndices.forEach(function(glyphIndex, index){
+            var glyph = font.glyphs[glyphIndex];
+            glyph.font = {
+              unitsPerEm: 1000
+            };
+            glyphs[sortedGlyphNames[index]] = glyph;
+          });
+
+          var font = {
+            "glyphs": glyphs,
+            "cssFontWeight":"normal",
+            "ascender": font.ascender,
+            "underlinePosition":-125,
+            "cssFontStyle":"normal",
+            "boundingBox":{
+              "yMin":font.tables.head.yMin,
+                "xMin":font.tables.head.xMin,
+                "yMax":font.tables.head.yMax,
+                "xMax":font.tables.head.xMax
+            },
+            "resolution":1000,
+            "descender": font.descender,
+            "familyName":"Bravura",
+            "lineHeight":4093,
+            "underlineThickness":50
           };
-          glyphs[sortedGlyphNames[index]] = glyph;
-        });
 
-        debugger;
+          $("textarea").html(JSON.stringify(font, undefined, 4));
 
-        var font = {
-          "glyphs": glyphs,
-          "cssFontWeight":"normal",
-          "ascender": font.ascender,
-          "underlinePosition":-125,
-          "cssFontStyle":"normal",
-          "boundingBox":{
-            "yMin":font.tables.head.yMin,
-              "xMin":font.tables.head.xMin,
-              "yMax":font.tables.head.yMax,
-              "xMax":font.tables.head.xMax
-          },
-          "resolution":1000,
-          "descender": font.descender,
-          "familyName":"Bravura",
-          "lineHeight":4093,
-          "underlineThickness":50
-        };
+          var scale = 1 / font.resolution * 72;
 
-        $("textarea").html(JSON.stringify(font, undefined, 4));
+          var x = 20;
+          var y = 100;
+          Object.keys(glyphs).forEach(function(glyphName, index){
 
-        var scale = 1 / font.resolution * 40;
+            console.log(glyphName);
+            var glyph = glyphs[glyphName];
 
-        var x = 20;
-        var y = 100;
-        Object.keys(glyphs).forEach(function(glyphName){
-          console.log(glyphName);
-          var glyph = glyphs[glyphName];
+            var width = glyph.advanceWidth * scale;  
+            if (x + width > 1600){
+              x = 0;
+              y += 100;
+            }
+            glyph.draw(ctx, x, y, 72);
 
-          var width = glyph.advanceWidth * scale;  
-          if (x > 1600){
-            x = 0;
-            y += 60;
-          }
-          glyph.draw(ctx, x, y, 40);
+            var bb = METADATA.glyphBBoxes[glyphName];
+            if (bb) {
+              drawBoundingBox(ctx, bb, x, y);
+            }
 
-          debugger;
-          ctx.save();
-          ctx.beginPath();
-          ctx.strokeStyle = "red";
-          ctx.moveTo(x, y);
-          ctx.lineTo(x + width, y);
-          ctx.stroke();
-          ctx.closePath();
-          ctx.restore();
+            function getBoundingCoords(bb){
+              return {
+                "SW": {
+                  x: bb.bBoxSW[0],
+                  y: bb.bBoxSW[1]
+                },
+                "NE": {
+                  x: bb.bBoxNE[0],
+                  y: bb.bBoxNE[1]
+                },
+                "NW": {
+                  x: bb.bBoxSW[0],
+                  y: bb.bBoxSW[1] + (bb.bBoxNE[1] - bb.bBoxSW[1])
+                },
+                "SE": {
+                  x: bb.bBoxNE[0],
+                  y: bb.bBoxNE[1] + (bb.bBoxSW[1] - bb.bBoxNE[1])
+                }
+              };
+            } 
 
-          x += 50;
-        });
-      }
+            var cutouts = METADATA.glyphsWithAnchors[glyphName];
+            if (cutouts) {
+              drawCutOuts(ctx, getBoundingCoords(bb), cutouts, x, y);
+            }
+
+            function drawBoundingBox(ctx, bb, x, y){
+              var bbOrigin = {
+                x: emsToPixels(bb.bBoxSW[0]) + x,
+                y: -emsToPixels(bb.bBoxSW[1]) + y
+              };
+
+              var bbMetrics = {
+                w: emsToPixels(bb.bBoxNE[0] - bb.bBoxSW[0]),
+                h: -emsToPixels(bb.bBoxNE[1] - bb.bBoxSW[1])
+              };
+
+              ctx.save();
+              ctx.strokeStyle = "red";
+              ctx.strokeRect(bbOrigin.x, bbOrigin.y, bbMetrics.w, bbMetrics.h);
+              ctx.restore();
+            }
+
+            function drawCutOuts(ctx, coords, cutouts, x, y) {
+              var cutoutPositions = ["NE", "NW", "SE", "SW"];
+
+              cutoutPositions.forEach(function(cutOutPosition){
+                drawCutOut(ctx, coords[cutOutPosition], cutouts["cutOut" + cutOutPosition], x, y);
+              });
+            }
+
+            function drawCutOut(ctx, origin, cutOut) {
+              if (cutOut) {
+                var rect = {
+                  x: emsToPixels(origin.x) + x,
+                  y: -emsToPixels(origin.y) + y,
+                  w: emsToPixels(cutOut[0] - origin.x),
+                  h: -emsToPixels(cutOut[1] - origin.y)
+                };
+
+                drawRectangle(ctx, rect.x, rect.y, rect.w, rect.h);
+              }
+            }
+
+            function drawRectangle(ctx, x, y, w, h) {
+              ctx.save();
+              ctx.strokeStyle = "red";
+              ctx.strokeRect(x, y, w, h);
+              ctx.restore();
+            }
+
+            function emsToPixels(ems){
+              return ems * 250 * scale;
+            }
+
+            x += width + 20;
+          });
+        }
+      });
     });
   });
   </script>

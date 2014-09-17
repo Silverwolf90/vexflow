@@ -68,43 +68,43 @@ Vex.Flow.Font.Bravura.Metrics = {
 
   // TIME SIGNATURES
   "timeSig0": {
-    y_shift: -10,
+    y_shift: -9,
     size: 35
   },
   "timeSig1": {
-    y_shift: -10,
+    y_shift: -9,
     size: 35
   },
   "timeSig2": {
-    y_shift: -10,
+    y_shift: -9,
     size: 35
   },
   "timeSig3": {
-    y_shift: -10,
+    y_shift: -9,
     size: 35
   },
   "timeSig4": {
-    y_shift: -10,
+    y_shift: -9,
     size: 35
   },
   "timeSig5": {
-    y_shift: -10,
+    y_shift: -9,
     size: 35
   },
   "timeSig6": {
-    y_shift: -10,
+    y_shift: -9,
     size: 35
   },
   "timeSig7": {
-    y_shift: -10,
+    y_shift: -9,
     size: 35
   },
   "timeSig8": {
-    y_shift: -10,
+    y_shift: -9,
     size: 35
   },
   "timeSig9": {
-    y_shift: -10,
+    y_shift: -9,
     size: 35
   },
   "timeSigCommon": {

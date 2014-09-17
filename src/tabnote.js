@@ -29,8 +29,6 @@ Vex.Flow.TabNote = (function() {
 
       // Render Options
       Vex.Merge(this.render_options, {
-        // font size for note heads and rests
-        glyph_font_scale: 30,
         // Flag to draw a stem
         draw_stem: draw_stem,
         // Flag to draw dot modifiers
@@ -239,7 +237,7 @@ Vex.Flow.TabNote = (function() {
 
       // Now it's the flag's turn.
       if (this.glyph.flag && render_flag) {
-        var flag_x = this.getStemX() + 1 ;
+        var flag_x = this.getStemX();
         var flag_y = this.getStemY() - (this.stem.getHeight());
         var flag_glyph_name;
 
@@ -252,8 +250,7 @@ Vex.Flow.TabNote = (function() {
         }
 
         // Draw the Flag
-        Vex.Flow.renderGlyph(this.context, flag_x, flag_y,
-            this.render_options.glyph_font_scale, flag_glyph_name);
+        Vex.Flow.renderGlyph(this.context, flag_x, flag_y, flag_glyph_name);
       }
     },
 
@@ -324,8 +321,7 @@ Vex.Flow.TabNote = (function() {
         ctx.clearRect(tab_x - 2, y - 3, glyph.width + 4, 6);
 
         if (glyph.code) {
-          Vex.Flow.renderGlyph(ctx, tab_x, y + 5 + glyph.shift_y,
-              this.render_options.glyph_font_scale, glyph.code);
+          Vex.Flow.renderGlyph(ctx, tab_x, y + 5 + glyph.shift_y, glyph.code);
         } else {
           var text = glyph.text.toString();
           ctx.fillText(text, tab_x, y + 5);

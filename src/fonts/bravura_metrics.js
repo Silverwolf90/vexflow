@@ -370,67 +370,67 @@ Vex.Flow.Font.Bravura.Metrics = {
   "ornamentMordent": {
     shift_up: 0,
     shift_down: 5,
-    size: 38
+    size: 35
   },
   "ornamentMordentInverted": {
     shift_up: 0,
     shift_down: 5,
-    size: 38
+    size: 35
   },
   "ornamentTurn": {
     shift_up: 0,
     shift_down: 5,
-    size: 38
+    size: 40
   },
   "ornamentTurnSlash": {
     shift_up: 0,
     shift_down: 6,
-    size: 38
+    size: 40
   },
   "ornamentTrill": {
     shift_up: 5,
     shift_down: 15,
-    size: 38
+    size: 35
   },
   "ornamentPrecompSlideTrillDAnglebert": {
     shift_up: -3,
     shift_down: 6,
-    size: 38
+    size: 35
   },
   "ornamentPrecompMordentUpperPrefix": {
     shift_up: -3,
     shift_down: 6,
-    size: 38
+    size: 35
   },
   "ornamentPrecompTrillSuffixDandrieu": {
     shift_up: -3,
     shift_down: 6,
-    size: 38
+    size: 35
   },
   "ornamentPrecompTrillLowerSuffix": {
     shift_up: -3,
     shift_down: 6,
-    size: 38
+    size: 35
   },
   "ornamentPrecompPortDeVoixMordent": {
     shift_up: -3,
     shift_down: 6,
-    size: 38
+    size: 35
   },
   "ornamentPrecompInvertedMordentUpperPrefix": {
     shift_up: -3,
     shift_down: 6,
-    size: 38
+    size: 35
   },
   "ornamentPrecompAppoggTrill": {
     shift_up: -3,
     shift_down: 6,
-    size: 38
+    size: 35
   },
   "ornamentTremblement": {
     shift_up: -3,
     shift_down: 6,
-    size: 38
+    size: 35
   },
   "graceNoteSlashStemUp":{},
 

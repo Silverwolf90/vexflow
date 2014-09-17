@@ -106,9 +106,8 @@ Vex.Flow.NoteHead = (function() {
       if (head_options.glyph_font_scale) {
         this.render_options.glyph_font_scale = head_options.glyph_font_scale;
       }
-      var glyph_size = this.render_options.glyph_font_scale * Vex.Flow.FontLoader.getFontSize(this.glyph_name);
       
-      this.glyph = new Vex.Flow.Glyph(this.glyph_name, glyph_size);
+      this.glyph = new Vex.Flow.Glyph(this.glyph_name, this.render_options.glyph_font_scale);
       this.setWidth(Vex.Flow.Font.Metrics[this.glyph_name].width);
     },
 

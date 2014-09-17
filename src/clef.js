@@ -89,7 +89,6 @@ Vex.Flow.Clef = (function() {
         this.size = size;
       }
 
-      this.clef.point = Vex.Flow.Font.Metrics[this.clef.glyph_name].point;
       
       // If an annotation, such as 8va, is specified, add it to the Clef object.
       if (annotation !== undefined) {
@@ -100,7 +99,6 @@ Vex.Flow.Clef = (function() {
 
         this.annotation = {
           glyph_name: anno_dict.glyph_name,
-          point: metrics.point,
           line: metrics.line,
           x_shift: metrics.x_shift
         };
@@ -114,7 +112,6 @@ Vex.Flow.Clef = (function() {
       var pointType = this.isSmall() ? "small_point" : "default_point";
       
       var metricsForClef =  metrics[this.annotation][this.clef.glyph_name][this.getSize()];
-      metricsForClef.point = metrics[pointType];
 
       return metricsForClef;
     },
@@ -141,10 +138,10 @@ Vex.Flow.Clef = (function() {
     addModifier: function(stave) {
       var glyph_name = this.getGlyphName();
 
-      var glyph = new Vex.Flow.Glyph(glyph_name, this.clef.point);
+      var glyph = new Vex.Flow.Glyph(glyph_name);
       this.placeGlyphOnLine(glyph, stave, this.clef.line);
       if (this.annotation !== undefined) {
-        var attachment = new Vex.Flow.Glyph(this.annotation.glyph_name, this.annotation.point);
+        var attachment = new Vex.Flow.Glyph(this.annotation.glyph_name);
         attachment.metrics.x_max = 0;
         attachment.setXShift(this.annotation.x_shift);
         this.placeGlyphOnLine(attachment, stave, this.annotation.line);
@@ -157,11 +154,11 @@ Vex.Flow.Clef = (function() {
     addEndModifier: function(stave) {
       var glyph_name = this.getGlyphName();
 
-      var glyph = new Vex.Flow.Glyph(glyph_name, this.clef.point);
+      var glyph = new Vex.Flow.Glyph(glyph_name);
       this.placeGlyphOnLine(glyph, stave, this.clef.line);
       stave.addEndGlyph(glyph);
       if (this.annotation !== undefined) {
-        var attachment = new Vex.Flow.Glyph(this.annotation.glyph_name, this.annotation.point);
+        var attachment = new Vex.Flow.Glyph(this.annotation.glyph_name);
         attachment.metrics.x_max = 0;
         attachment.setXShift(this.annotation.x_shift);
         this.placeGlyphOnLine(attachment, stave, this.annotation.line);

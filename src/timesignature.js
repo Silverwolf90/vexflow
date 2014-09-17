@@ -41,7 +41,7 @@ Vex.Flow.TimeSignature = (function() {
       if (timeSpec == "C" || timeSpec == "C|") {
         var glyphInfo = TimeSignature.glyphs[timeSpec];
         return {num: false, line: glyphInfo.line,
-          glyph: new Vex.Flow.Glyph(glyphInfo.glyph_name, Vex.Flow.FontLoader.getFontSize(glyphInfo.glyph_name))};
+          glyph: new Vex.Flow.Glyph(glyphInfo.glyph_name)};
       }
 
       var topNums = [];
@@ -91,7 +91,7 @@ Vex.Flow.TimeSignature = (function() {
     },
 
     makeTimeSignatureGlyph: function(topNums, botNums) {
-      var glyph = new Vex.Flow.Glyph("timeSig0", this.point);
+      var glyph = new Vex.Flow.Glyph("timeSig0");
       glyph["topGlyphs"] = [];
       glyph["botGlyphs"] = [];
 
@@ -102,7 +102,7 @@ Vex.Flow.TimeSignature = (function() {
         num = topNums[i];
 
         glyph_name = "timeSig" + num;
-        var topGlyph = new Vex.Flow.Glyph(glyph_name, Vex.Flow.FontLoader.getFontSize(glyph_name));
+        var topGlyph = new Vex.Flow.Glyph(glyph_name);
 
         glyph.topGlyphs.push(topGlyph);
         topWidth += topGlyph.getMetrics().width;
@@ -113,7 +113,7 @@ Vex.Flow.TimeSignature = (function() {
         num = botNums[i];
         glyph_name = "timeSig" + num;
 
-        var botGlyph = new Vex.Flow.Glyph(glyph_name, Vex.Flow.FontLoader.getFontSize(glyph_name));
+        var botGlyph = new Vex.Flow.Glyph(glyph_name);
 
         glyph.botGlyphs.push(botGlyph);
         botWidth += botGlyph.getMetrics().width;

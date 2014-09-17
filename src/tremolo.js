@@ -25,7 +25,6 @@ Vex.Flow.Tremolo = (function() {
       this.y_spacing = 4;
 
       this.render_options = {
-        font_scale: 35,
         stroke_px: 3,
         stroke_spacing: 10
       };
@@ -51,8 +50,7 @@ Vex.Flow.Tremolo = (function() {
 
       x += this.shift_right;
       for (var i = 0; i < this.num; ++i) {
-        Vex.Flow.renderGlyph(this.context, x, y,
-                             this.render_options.font_scale, this.code);
+        Vex.Flow.renderGlyph(this.context, x, y, this.code);
         y += this.y_spacing;
       }
     }

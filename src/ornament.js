@@ -249,8 +249,7 @@ Vex.Flow.Ornament = (function() {
         }
 
         // Render the glyph
-        var scale = Vex.Flow.FontLoader.getFontSize(accidental.glyph_name)/1.3;
-        Vex.Flow.renderGlyph(ctx, acc_x, acc_y, scale, accidental.glyph_name);
+        Vex.Flow.renderGlyph(ctx, acc_x, acc_y, 0.75, accidental.glyph_name);
 
         // If rendered a bottom accidental, increase the y value by the
         // accidental height so that the ornament's glyph is shifted up

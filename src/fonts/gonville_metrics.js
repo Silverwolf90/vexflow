@@ -2,8 +2,12 @@
 //
 Vex.Flow.Font.Gonville.Metrics = {
   // STAFF BRACKETS AND DIVIDERS
-  "bracketTop": {},
-  "bracketBottom": {},
+  "bracketTop": {
+    y_shift: -3
+  },
+  "bracketBottom": {
+    y_shift: 3
+  },
 
   // CLEFS
   "gClef": {

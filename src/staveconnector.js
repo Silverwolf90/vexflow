@@ -148,8 +148,8 @@ Vex.Flow.StaveConnector = (function() {
           topY -= 4;
           botY += 4;
           attachment_height = botY - topY;
-          Vex.Flow.renderGlyph(this.ctx, topX - 5, topY - 3, 40, "bracketTop", true);
-          Vex.Flow.renderGlyph(this.ctx, topX - 5, botY + 3, 40, "bracketBottom", true);
+          Vex.Flow.renderGlyph(this.ctx, topX - 5, topY, "bracketTop", true);
+          Vex.Flow.renderGlyph(this.ctx, topX - 5, botY, "bracketBottom", true);
           topX -= (this.width + 2);
           break;
         case StaveConnector.type.BOLD_DOUBLE_LEFT:

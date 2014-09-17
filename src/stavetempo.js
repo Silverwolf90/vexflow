@@ -27,7 +27,7 @@ Vex.Flow.StaveTempo = (function() {
         weight: "bold"
       };
       this.render_options = {
-        glyph_font_scale: 30  // font size for note
+        glyph_scale: 0.8 
       };
     },
 
@@ -41,7 +41,7 @@ Vex.Flow.StaveTempo = (function() {
         "Can't draw stave tempo without a context.");
 
       var options = this.render_options;
-      var scale = options.glyph_font_scale / 38;
+      var scale = options.glyph_scale;
       var name = this.tempo.name;
       var duration = this.tempo.duration;
       var dots = this.tempo.dots;
@@ -71,7 +71,7 @@ Vex.Flow.StaveTempo = (function() {
         var code = Vex.Flow.durationToGlyph(duration);
 
         x += 3 * scale;
-        Vex.Flow.renderGlyph(ctx, x, y, options.glyph_font_scale, code.glyph_name);
+        Vex.Flow.renderGlyph(ctx, x, y, options.glyph_scale, code.glyph_name);
         x += code.width * scale;
 
         // Draw stem and flags
@@ -86,7 +86,7 @@ Vex.Flow.StaveTempo = (function() {
           ctx.fillRect(x, y_top, scale, stem_height);
 
           if (code.flag) {
-            Vex.Flow.renderGlyph(ctx, x + scale, y_top, options.glyph_font_scale,
+            Vex.Flow.renderGlyph(ctx, x, y_top, options.glyph_scale,
                                  code.glyph_name_flag_up);
 
             if (!dots) x += 6 * scale;

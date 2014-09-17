@@ -886,10 +886,9 @@ Vex.Flow.StaveNote = (function() {
           flag_y = bounds.y_bottom - note_stem_height + (glyph.up_y_shift || 0);
           flag_glyph_name = glyph.glyph_name_flag_up;
         }
-        var defaultFontSize = Vex.Flow.FontLoader.getFontSize(flag_glyph_name);
-        var flag_size = this.render_options.glyph_font_scale * defaultFontSize;
         // Draw the Flag
-        Vex.Flow.renderGlyph(ctx, flag_x, flag_y, flag_size, flag_glyph_name);
+        var font_scale = this.render_options.glyph_font_scale;
+        Vex.Flow.renderGlyph(ctx, flag_x, flag_y, font_scale, flag_glyph_name);
       }
     },
 

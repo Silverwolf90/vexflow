@@ -83,7 +83,6 @@ Vex.Flow.Stroke = (function() {
       this.position = Modifier.Position.LEFT;
 
       this.render_options = {
-        font_scale: 38,
         stroke_px: 3,
         stroke_spacing: 10
       };
@@ -190,14 +189,12 @@ Vex.Flow.Stroke = (function() {
         if (this.note instanceof Vex.Flow.StaveNote) {
           for (i = topY; i <= botY; i += line_space) {
             Vex.Flow.renderGlyph(this.context, x + this.x_shift - 4,
-                                 i,
-                                 this.render_options.font_scale, "wiggleArpeggiatoDown");
+                                 i, "wiggleArpeggiatoDown");
           }
         } else {
           for (i = topY; i <= botY; i+= 10) {
             Vex.Flow.renderGlyph(this.context, x + this.x_shift - 4,
-                                 i,
-                                 this.render_options.font_scale, "wiggleArpeggiatoDown");
+                                 i, "wiggleArpeggiatoDown");
           }
           if (this.type == Vex.Flow.Stroke.Type.RASQUEDO_DOWN)
             text_y = i + 0.25 * line_space;
@@ -205,8 +202,7 @@ Vex.Flow.Stroke = (function() {
       }
 
       // Draw the arrow head
-      Vex.Flow.renderGlyph(this.context, x + this.x_shift + arrow_shift_x, arrow_y,
-                           this.render_options.font_scale, arrow);
+      Vex.Flow.renderGlyph(this.context, x + this.x_shift + arrow_shift_x, arrow_y, arrow);
 
       // Draw the rasquedo "R"
       if (this.type == Stroke.Type.RASQUEDO_DOWN ||

@@ -16,13 +16,13 @@
  * @param {string} val The glyph name in Vex.Flow.Font.
  * @param {boolean} nocache If set, disables caching of font outline.
  */
-Vex.Flow.renderGlyph = function(ctx, x_pos, y_pos, point, val, nocache) {
-  if (typeof point !== 'number') {
+Vex.Flow.renderGlyph = function(ctx, x_pos, y_pos, scale, val, nocache) {
+  if (typeof scale !== 'number') {
     nocache = val;
-    val = point;
-  point = null;
+    val = scale;
+    scale = null;
   }
-  var glyph = new Vex.Flow.Glyph(val, point);
+  var glyph = new Vex.Flow.Glyph(val, scale);
   glyph.render(ctx, x_pos, y_pos);
 };
 
@@ -30,10 +30,10 @@ Vex.Flow.renderGlyph = function(ctx, x_pos, y_pos, point, val, nocache) {
  * @constructor
  */
 Vex.Flow.Glyph = (function() {
-  function Glyph(glyph_name, point, options) {
+  function Glyph(glyph_name, scale, options) {
     this.glyph_name = glyph_name;
-
-    this.point = point || Vex.Flow.FontLoader.getFontSize(glyph_name);
+    debugger;
+    this.point = Vex.Flow.FontLoader.getFontSize(glyph_name) * (scale || 1);
     this.context = null;
     this.options = {
       cache: true,

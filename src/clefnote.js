@@ -20,7 +20,7 @@ Vex.Flow.ClefNote = (function() {
     setClef: function(clef, size, annotation) {
       this.clef_obj = new Vex.Flow.Clef(clef, size, annotation);
       this.clef = this.clef_obj.clef;
-      this.glyph = new Vex.Flow.Glyph(this.clef_obj.getGlyphName(), this.clef.point);
+      this.glyph = new Vex.Flow.Glyph(this.clef_obj.getGlyphName());
       this.setWidth(this.glyph.getMetrics().width);
       return this;
     },

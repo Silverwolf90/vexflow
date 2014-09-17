@@ -301,7 +301,7 @@ Vex.Flow.Stave = (function() {
 
     addTrebleGlyph: function() {
       this.clef = "treble";
-      this.addGlyph(new Vex.Flow.Glyph("gClef", 40));
+      this.addGlyph(new Vex.Flow.Glyph("gClef"));
       return this;
     },
 

@@ -2,10 +2,10 @@
 Vex.Flow.Font.Bravura.Metrics = {
   // STAFF BRACKETS AND DIVIDERS
   "bracketTop": {
-    size: 40
+    size: 35
   },
   "bracketBottom": {
-    size: 40,
+    size: 35,
   },
 
   // CLEFS

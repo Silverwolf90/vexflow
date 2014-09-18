@@ -163,7 +163,7 @@ Vex.Flow.Articulation = (function() {
         else
           glyph_y = Math.max(stave.getYForBottomText(this.text_line), glyph_y_between_lines);
       }
-      debugger;
+
       var glyph_x = start.x - (this.glyph.width/2);
       glyph_y += shiftY + this.y_shift;
 

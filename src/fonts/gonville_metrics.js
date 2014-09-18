@@ -697,6 +697,10 @@ Vex.Flow.Font.Gonville.Metrics = {
   "wiggleArpeggiatoUpArrow":{},
 
   //ARROWS AND ARROWHEADS
-  "arrowheadBlackUp": {},
-  "arrowheadBlackDown": {}
+  "arrowheadBlackUp": {
+    origin: "left"
+  },
+  "arrowheadBlackDown": {
+    origin: "center"
+  }
 };

@@ -128,21 +128,18 @@ Vex.Flow.Stroke = (function() {
       switch (this.type) {
         case Stroke.Type.BRUSH_DOWN:
           arrow = "arrowheadBlackUp";
-          arrow_shift_x = -3.5;
           arrow_y = topY - (line_space / 2) + 10;
           botY += (line_space / 2);
           break;
         case Stroke.Type.BRUSH_UP:
           arrow = "arrowheadBlackDown";
-          arrow_shift_x = -3.5;
           arrow_y = botY + (line_space / 2);
           topY -= (line_space / 2);
           break;
         case Stroke.Type.ROLL_DOWN:
         case Stroke.Type.RASQUEDO_DOWN:
           arrow = "wiggleArpeggiatoUpArrow";
-          arrow_shift_x = -3;
-          text_shift_x = this.x_shift + arrow_shift_x - 2;
+          text_shift_x = this.x_shift;
           if (this.note instanceof Vex.Flow.StaveNote) {
             topY += 1.5 * line_space;
             if ((botY - topY) % 2 !== 0) {
@@ -162,8 +159,7 @@ Vex.Flow.Stroke = (function() {
         case Stroke.Type.ROLL_UP:
         case Stroke.Type.RASQUEDO_UP:
           arrow = "wiggleArpeggiatoDownArrow";
-          arrow_shift_x = -4;
-          text_shift_x = this.x_shift + arrow_shift_x - 1;
+          text_shift_x = this.x_shift;
           if (this.note instanceof Vex.Flow.StaveNote) {
             arrow_y = line_space / 2;
             topY += 0.5 * line_space;
@@ -202,14 +198,17 @@ Vex.Flow.Stroke = (function() {
       }
 
       // Draw the arrow head
-      Vex.Flow.renderGlyph(this.context, x + this.x_shift + arrow_shift_x, arrow_y, arrow);
+      var arrowHeadGlyph = new Vex.Flow.Glyph(arrow);
+      arrow_shift_x = -arrowHeadGlyph.getCenterWidth();
+      arrowHeadGlyph.render(this.context, x + this.x_shift + arrow_shift_x, arrow_y);
 
       // Draw the rasquedo "R"
       if (this.type == Stroke.Type.RASQUEDO_DOWN ||
           this.type == Stroke.Type.RASQUEDO_UP) {
+
         this.context.save();
         this.context.setFont(this.font.family, this.font.size, this.font.weight);
-        this.context.fillText("R", x + text_shift_x, text_y);
+        this.context.fillText("R", x + text_shift_x + arrow_shift_x, text_y);
         this.context.restore();
       }
     }

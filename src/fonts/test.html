@@ -151,6 +151,56 @@
         });
       }
 
+      function getOutline(glyph) {
+        var outline = "";
+        glyph.path.commands.forEach(function(cmd){
+          switch (cmd.type) {
+            case "M":
+              outline += createOutlineCommand("m", [cmd.x, -cmd.y]);
+              break;
+            case "L":
+              outline += createOutlineCommand("l", [cmd.x, -cmd.y]);
+              break;
+            case "Q":
+              outline += createOutlineCommand("q", [cmd.x1, -cmd.y1, cmd.x, -cmd.y]);
+              break;
+            case "C":
+              outline += createOutlineCommand("b", [cmd.x, -cmd.y, cmd.x1, -cmd.y1, cmd.x2, -cmd.y2]);
+              break;
+            case "Z":
+              break;
+          } 
+        });
+        return outline.substr(0, outline.length - 1);
+      }
+
+      function createOutlineCommand(type, points) {
+        return points.reduce(function(str, point){
+          return str + " " + point; 
+        }, type) + " ";
+      }
+
+      function getBoundingCoords(bb){
+        return {
+          "SW": {
+            x: bb.bBoxSW[0],
+            y: bb.bBoxSW[1]
+          },
+          "NE": {
+            x: bb.bBoxNE[0],
+            y: bb.bBoxNE[1]
+          },
+          "NW": {
+            x: bb.bBoxSW[0],
+            y: bb.bBoxSW[1] + (bb.bBoxNE[1] - bb.bBoxSW[1])
+          },
+          "SE": {
+            x: bb.bBoxNE[0],
+            y: bb.bBoxNE[1] + (bb.bBoxSW[1] - bb.bBoxNE[1])
+          }
+        };
+      }
+
       var glyphNameCodepointMap = {};
       var codepoints = [];
       var sortedGlyphNames = [];
@@ -163,7 +213,6 @@
         codepoints.push(codepoint);
         sortedGlyphNames.push(glyphName); 
       });
-
 
       var ctx = document.getElementById("draw").getContext('2d');
 
@@ -181,13 +230,19 @@
 
           glyphIndices.forEach(function(glyphIndex, index){
             var glyph = font.glyphs[glyphIndex];
-            glyph.font = {
-              unitsPerEm: 1000
+            var outline = getOutline(glyph);
+
+            glyphs[sortedGlyphNames[index]] = {
+              advanceWidth: glyph.advanceWidth,
+              o: outline,
+              x_min: glyph.xMin,
+              x_max: glyph.xMax,
+              y_min: glyph.yMin,
+              y_max: glyph.yMax
             };
-            glyphs[sortedGlyphNames[index]] = glyph;
           });
 
-          var font = {
+          var fontObject = {
             "glyphs": glyphs,
             "cssFontWeight":"normal",
             "ascender": font.ascender,
@@ -199,22 +254,18 @@
                 "yMax":font.tables.head.yMax,
                 "xMax":font.tables.head.xMax
             },
-            "resolution":1000,
+            "resolution":font.unitsPerEm,
             "descender": font.descender,
             "familyName":"Bravura",
             "lineHeight":4093,
             "underlineThickness":50
           };
 
-          $("textarea").html(JSON.stringify(font, undefined, 4));
-
-          var scale = 1 / font.resolution * 72;
+          var scale = 1 / fontObject.resolution * 72;
 
           var x = 20;
           var y = 100;
           Object.keys(glyphs).forEach(function(glyphName, index){
-
-            console.log(glyphName);
             var glyph = glyphs[glyphName];
 
             var width = glyph.advanceWidth * scale;  
@@ -222,54 +273,32 @@
               x = 0;
               y += 100;
             }
-            glyph.draw(ctx, x, y, 72);
+
+            Vex.Flow.Glyph.renderOutline(ctx, glyph.o.split(' '), scale, x, y);
 
             var bb = METADATA.glyphBBoxes[glyphName];
+            var bbCoords = getBoundingCoords(bb);
+
+            glyph.bb = bbCoords;
+
+            var cutouts = METADATA.glyphsWithAnchors[glyphName];
+            if (cutouts) {
+              drawCutOuts(ctx, bbCoords, cutouts, x, y);
+            }
+
             if (bb) {
               drawBoundingBox(ctx, bb, x, y);
             }
 
-            function getBoundingCoords(bb){
-              return {
-                "SW": {
-                  x: bb.bBoxSW[0],
-                  y: bb.bBoxSW[1]
-                },
-                "NE": {
-                  x: bb.bBoxNE[0],
-                  y: bb.bBoxNE[1]
-                },
-                "NW": {
-                  x: bb.bBoxSW[0],
-                  y: bb.bBoxSW[1] + (bb.bBoxNE[1] - bb.bBoxSW[1])
-                },
-                "SE": {
-                  x: bb.bBoxNE[0],
-                  y: bb.bBoxNE[1] + (bb.bBoxSW[1] - bb.bBoxNE[1])
-                }
-              };
-            } 
-
-            var cutouts = METADATA.glyphsWithAnchors[glyphName];
-            if (cutouts) {
-              drawCutOuts(ctx, getBoundingCoords(bb), cutouts, x, y);
-            }
-
             function drawBoundingBox(ctx, bb, x, y){
-              var bbOrigin = {
+              var rect = {
                 x: emsToPixels(bb.bBoxSW[0]) + x,
-                y: -emsToPixels(bb.bBoxSW[1]) + y
-              };
-
-              var bbMetrics = {
+                y: -emsToPixels(bb.bBoxSW[1]) + y,
                 w: emsToPixels(bb.bBoxNE[0] - bb.bBoxSW[0]),
                 h: -emsToPixels(bb.bBoxNE[1] - bb.bBoxSW[1])
               };
 
-              ctx.save();
-              ctx.strokeStyle = "red";
-              ctx.strokeRect(bbOrigin.x, bbOrigin.y, bbMetrics.w, bbMetrics.h);
-              ctx.restore();
+              drawRectangle(ctx, rect.x, rect.y, rect.w, rect.h);
             }
 
             function drawCutOuts(ctx, coords, cutouts, x, y) {
@@ -289,13 +318,13 @@
                   h: -emsToPixels(cutOut[1] - origin.y)
                 };
 
-                drawRectangle(ctx, rect.x, rect.y, rect.w, rect.h);
+                drawRectangle(ctx, rect.x, rect.y, rect.w, rect.h, "green");
               }
             }
 
-            function drawRectangle(ctx, x, y, w, h) {
+            function drawRectangle(ctx, x, y, w, h, color) {
               ctx.save();
-              ctx.strokeStyle = "red";
+              ctx.strokeStyle = color || "red";
               ctx.strokeRect(x, y, w, h);
               ctx.restore();
             }
@@ -306,6 +335,8 @@
 
             x += width + 20;
           });
+
+          $("textarea").html("Vex.Flow.Font.Bravura = " + JSON.stringify(font));
         }
       });
     });

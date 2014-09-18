@@ -1,35 +1,41 @@
 //Using SMuFL naming
 Vex.Flow.Font.Bravura.Metrics = {
   // STAFF BRACKETS AND DIVIDERS
-  "bracketTop": {},
-  "bracketBottom": {},
+  "bracketTop": {
+    size: 40
+  },
+  "bracketBottom": {
+    size: 40,
+  },
 
   // CLEFS
   "gClef": {
-    point: 40
+    size: 40
   },
   "fClef": {
-    point: 40
+    size: 40
   },
   "cClef": {
-    point: 40
+    size: 40
   },
   "gClefChange": {
-    point: 40
+    size: 40
   },
   "fClefChange": {
-    point: 40
+    size: 40
   },
   "cClefChange": {
-    point: 40
+    size: 40
   },
   "unpitchedPercussionClef1": {
-    point: 40
+    size: 40
   },
-  "6stringTabClef": {},
+  "6stringTabClef": {
+    size: 40
+  },
   "clef8": {
-    default_point: 40,
-    small_point: 36,
+    default_size: 40,
+    small_size: 36,
     "8va": {
       "gClef": {
         "default" : {
@@ -579,19 +585,19 @@ Vex.Flow.Font.Bravura.Metrics = {
 
   // HOLDS AND PAUSES
   "caesura": {
-    point:40,
+    size:40,
     x_shift:0,
     y_shift:2,
     width: 15
   },
   "caesuraCurved": {
-    point:40,
+    size:40,
     x_shift:0,
     y_shift:2,
     width: 15
   },
   "breathMarkComma": {
-    point:40,
+    size:40,
     x_shift:0,
     y_shift:0,
     width: 10,
@@ -601,7 +607,7 @@ Vex.Flow.Font.Bravura.Metrics = {
     size: 35
   },
   "breathMarkTick": {
-    point:50,
+    size:50,
     x_shift:0,
     y_shift:0,
     width: 10

@@ -11,30 +11,30 @@ Vex.Flow.Font.Gonville.Metrics = {
 
   // CLEFS
   "gClef": {
-    point: 40
+    size: 40
   },
   "fClef": {
-    point: 40
+    size: 40
   },
   "cClef": {
-    point: 40
+    size: 40
   },
   "gClefChange": {
-    point: 36
+    size: 36
   },
   "fClefChange": {
-    point: 36
+    size: 36
   },
   "cClefChange": {
-    point: 36
+    size: 36
   },
   "unpitchedPercussionClef1": {
-    point: 40
+    size: 40
   },
   "6stringTabClef": {},
   "clef8": {
-    default_point: 20,
-    small_point: 18,
+    default_size: 20,
+    small_size: 18,
     "8va": {
       "gClef": {
         "default" : {
@@ -606,19 +606,19 @@ Vex.Flow.Font.Gonville.Metrics = {
 
   // HOLDS AND PAUSES
   "caesura": {
-    point:40,
+    size:40,
     x_shift:0,
     y_shift:2,
     width: 15
   },
   "caesuraCurved": {
-    point:40,
+    size:40,
     x_shift:0,
     y_shift:2,
     width: 15
   },
   "breathMarkComma": {
-    point:40,
+    size:40,
     x_shift:0,
     y_shift:0,
     width: 10,
@@ -627,7 +627,7 @@ Vex.Flow.Font.Gonville.Metrics = {
     shift_down: 4
   },
   "breathMarkTick": {
-    point:50,
+    size:50,
     x_shift:0,
     y_shift:0,
     width: 10

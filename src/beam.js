@@ -192,7 +192,7 @@ Vex.Flow.Beam = (function() {
         var top_y_px = y_extents.topY;
 
         // For harmonic note heads, shorten stem length by 3 pixels
-        base_y_px += this.stem_direction * note.glyph.stem_offset;
+        base_y_px += this.stem_direction;
 
         // Don't go all the way to the top (for thicker stems)
         var y_displacement = Vex.Flow.STEM_WIDTH;
@@ -231,7 +231,7 @@ Vex.Flow.Beam = (function() {
                         this.slope) + this.y_shift;
 
         var stemHeight = note.stem.getDefaultHeight();
-
+        debugger;
         note.setStem(new Vex.Flow.Stem({
           x_begin: x_px - (Vex.Flow.STEM_WIDTH/2),
           x_end: x_px,

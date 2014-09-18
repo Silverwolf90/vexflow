@@ -164,7 +164,7 @@ Vex.Flow.Ornament = (function() {
         "Can't draw Ornament without a context.");
       if (!(this.note && (this.index !== null))) throw new Vex.RERR("NoAttachedNote",
         "Can't draw Ornament without a note and index.");
-
+    
       var ctx = this.context;
       var stem_direction = this.note.getStemDirection();
       var stave = this.note.getStave();

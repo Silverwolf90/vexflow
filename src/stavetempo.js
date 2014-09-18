@@ -68,26 +68,31 @@ Vex.Flow.StaveTempo = (function() {
           x += ctx.measureText("(").width;
         }
 
-        var code = Vex.Flow.durationToGlyph(duration);
+        var duration_data = Vex.Flow.durationToGlyph(duration);
 
         x += 3 * scale;
-        Vex.Flow.renderGlyph(ctx, x, y, options.glyph_scale, code.glyph_name);
-        x += code.width * scale;
+
+        var glyph = new Vex.Flow.Glyph(duration_data.glyph_name, options.glyph_scale);
+        glyph.render(ctx, x, y);
+
+        x += glyph.getWidth();
 
         // Draw stem and flags
-        if (code.stem) {
+        if (duration_data.stem) {
           var stem_height = 30;
 
-          if (code.beam_count) stem_height += 3 * (code.beam_count - 1);
+          if (duration_data.beam_count) stem_height += 3 * (duration_data.beam_count - 1);
 
           stem_height *= scale;
 
           var y_top = y - stem_height;
-          ctx.fillRect(x, y_top, scale, stem_height);
+          var stem_width = Vex.Flow.Stem.WIDTH;
+          var stem_x = x - stem_width;
+          ctx.fillRect(stem_x, y_top, stem_width, stem_height);
 
-          if (code.flag) {
-            Vex.Flow.renderGlyph(ctx, x, y_top, options.glyph_scale,
-                                 code.glyph_name_flag_up);
+          if (duration_data.flag) {
+            Vex.Flow.renderGlyph(ctx, stem_x, y_top, options.glyph_scale,
+                                 duration_data.glyph_name_flag_up);
 
             if (!dots) x += 6 * scale;
           }

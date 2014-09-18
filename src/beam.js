@@ -92,7 +92,7 @@ Vex.Flow.Beam = (function() {
     // Get the max number of beams in the set of notes
     getBeamCount: function(){
       var beamCounts =  this.notes.map(function(note) {
-        return note.getGlyph().beam_count;
+        return note.getDurationData().beam_count;
       });
 
       var maxBeamCount =  beamCounts.reduce(function(max, beamCount) {
@@ -186,13 +186,21 @@ Vex.Flow.Beam = (function() {
       for (var i = 0; i < this.notes.length; ++i) {
         var note = this.notes[i];
 
-        var x_px = note.getStemX();
+        var x_px;
+        if (note.getCategory() === "tabnotes"){
+          x_px = note.getStemX();
+          x_px += note.getStemDirection() === 1 ? Stem.WIDTH : -(Stem.WIDTH/3);
+        } else {
+          x_px = note.getStemDirection() === Vex.Flow.Stem.DOWN ? 
+            note.getNoteHeadBeginX() : note.getNoteHeadEndX();
+        }
+
         var y_extents = note.getStemExtents();
         var base_y_px = y_extents.baseY;
         var top_y_px = y_extents.topY;
 
         // For harmonic note heads, shorten stem length by 3 pixels
-        base_y_px += this.stem_direction;
+        base_y_px += this.stem_direction + (note.getDurationData().stem_offset || 0);
 
         // Don't go all the way to the top (for thicker stems)
         var y_displacement = Vex.Flow.STEM_WIDTH;
@@ -206,7 +214,7 @@ Vex.Flow.Beam = (function() {
 
             var stemlet_height = (total_width - y_displacement +
               this.render_options.stemlet_extension);
-
+            
             var beam_y = this.getSlopeY(centerGlyphX, first_x_px,
                             first_y_px, this.slope) + this.y_shift;
             var start_y = beam_y + (Vex.Flow.Stem.HEIGHT * this.stem_direction);
@@ -231,9 +239,9 @@ Vex.Flow.Beam = (function() {
                         this.slope) + this.y_shift;
 
         var stemHeight = note.stem.getDefaultHeight();
-        debugger;
+      
         note.setStem(new Vex.Flow.Stem({
-          x_begin: x_px - (Vex.Flow.STEM_WIDTH/2),
+          x_begin: x_px,
           x_end: x_px,
           y_top: this.stem_direction === 1 ? top_y_px : base_y_px,
           y_bottom: this.stem_direction === 1 ? base_y_px :  top_y_px ,
@@ -362,7 +370,7 @@ Vex.Flow.Beam = (function() {
 
         for (var j = 0; j < beam_lines.length; ++j) {
           var beam_line = beam_lines[j];
-          var first_x = beam_line.start - (this.stem_direction == Stem.DOWN ? Vex.Flow.STEM_WIDTH/2:0);
+          var first_x = beam_line.start;
           var first_y = this.getSlopeY(first_x, first_x_px, first_y_px, this.slope);
 
           var last_x = beam_line.end +

@@ -62,7 +62,7 @@ Vex.Flow.Note = (function() {
       this.modifiers = [];
 
       // Get the glyph code for this note from the font.
-      this.glyph = Vex.Flow.durationToGlyph(this.duration, this.noteType);
+      this.duration_data = Vex.Flow.durationToGlyph(this.duration, this.noteType);
 
       if (this.positions &&
           (typeof(this.positions) != "object" || !this.positions.length)) {
@@ -155,6 +155,8 @@ Vex.Flow.Note = (function() {
 
     // Get the glyph associated with this note.
     getGlyph: function() { return this.glyph; },
+
+    getDurationData: function() { return this.duration_data; },
 
     // Set and get Y positions for this note. Each Y value is associated with
     // an individual pitch/key within the note/chord.

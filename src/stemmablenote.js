@@ -42,10 +42,10 @@ Vex.Flow.StemmableNote = (function(){
 
     // Get the number of beams for this duration
     getBeamCount: function(){
-      var glyph = this.getGlyph();
+      var duration_data = this.getDurationData();
 
-      if (glyph) {
-        return glyph.beam_count;
+      if (duration_data) {
+        return duration_data.beam_count;
       } else {
         return 0;
       }
@@ -116,13 +116,11 @@ Vex.Flow.StemmableNote = (function(){
 
     // Get the `x` coordinate of the stem
     getStemX: function() {
-      var x_begin = this.getAbsoluteX() + this.x_shift;
-      var x_end = this.getAbsoluteX() + this.x_shift + this.glyph.getWidth();
+      var x_begin = this.getNoteHeadBeginX();
+      var x_end = this.getNoteHeadEndX() - Stem.WIDTH;
 
       var stem_x = this.stem_direction == Stem.DOWN ?
         x_begin : x_end;
-
-      stem_x -= ((Stem.WIDTH / 2) * this.stem_direction);
 
       return stem_x;
     },
@@ -135,15 +133,15 @@ Vex.Flow.StemmableNote = (function(){
 
     // Get the stem extension for the current duration
     getStemExtension: function(){
-      var glyph = this.getGlyph();
+      var duration_data = this.getDurationData();
 
       if (this.stem_extension_override != null) {
         return this.stem_extension_override;
       }
 
-      if (glyph && glyph.flag) {
-        return this.getStemDirection() === 1 ? glyph.stem_up_extension :
-          glyph.stem_down_extension;
+      if (duration_data && duration_data.flag) {
+        return this.getStemDirection() === 1 ? duration_data.stem_up_extension :
+          duration_data.stem_down_extension;
       }
 
       return 0;

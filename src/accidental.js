@@ -164,7 +164,6 @@ Vex.Flow.Accidental = (function(){
       if (this.note.getCategory() === 'gracenotes') {
         this.render_options.font_scale = 0.6;
         this.buildGlyphs();
-        this.setWidth(this.accidental.gracenote_width);
       }
     },
 

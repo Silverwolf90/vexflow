@@ -126,11 +126,11 @@ Vex.Flow.Stem = (function() {
       if (stem_direction == Stem.DOWN) {
         // Down stems are rendered to the left of the head.
         stem_x = this.x_begin + (Stem.WIDTH / 2);
-        stem_y = this.y_top + 2;
+        stem_y = this.y_top + 1.5;
       } else {
         // Up stems are rendered to the right of the head.
-        stem_x = this.x_end + (Stem.WIDTH / 2);
-        stem_y = this.y_bottom - 2;
+        stem_x = this.x_end - (Stem.WIDTH / 2);
+        stem_y = this.y_bottom - 1.5;
       }
 
       stem_y += this.y_extend * stem_direction;

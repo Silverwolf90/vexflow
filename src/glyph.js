@@ -22,6 +22,7 @@ Vex.Flow.renderGlyph = function(ctx, x_pos, y_pos, scale, val, nocache) {
     val = scale;
     scale = null;
   }
+
   var glyph = new Vex.Flow.Glyph(val, scale);
   glyph.render(ctx, x_pos, y_pos);
 };
@@ -114,6 +115,10 @@ Vex.Flow.Glyph = (function() {
     render: function(ctx, x_pos, y_pos) {
       if (!this.metrics) throw new Vex.RuntimeError("BadGlyph", "Glyph " +
           this.glyph_name + " is not initialized.");
+
+      if (x_pos === undefined || y_pos === undefined || isNaN(x_pos) || isNaN(y_pos)) {
+        throw new Vex.RuntimeError('X or Y position is undefined or NaN');
+      }
 
       var outline = this.metrics.outline;
       var scale = this.scale;

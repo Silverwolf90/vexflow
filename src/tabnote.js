@@ -75,15 +75,15 @@ Vex.Flow.TabNote = (function() {
 
     // Get the default stem extension for the note
     getStemExtension: function(){
-      var glyph = this.getGlyph();
+      var duration_data = this.getDurationData();
 
       if (this.stem_extension_override != null) {
         return this.stem_extension_override;
       }
 
-      if (glyph) {
-        return this.getStemDirection() === 1 ? glyph.tabnote_stem_up_extension :
-          glyph.tabnote_stem_down_extension;
+      if (duration_data) {
+        return this.getStemDirection() === 1 ? duration_data.tabnote_stem_up_extension :
+          duration_data.tabnote_stem_down_extension;
       }
 
       return 0;
@@ -208,7 +208,15 @@ Vex.Flow.TabNote = (function() {
     },
 
     // Get the x position for the stem
-    getStemX: function() { return this.getCenterGlyphX(); },
+    getStemX: function() {  
+      var x = this.getCenterGlyphX();
+      if (this.getStemDirection() === 1) {
+        x += (Stem.WIDTH/2);
+      } else{
+        x -= (Stem.WIDTH/2);
+      }
+      return x;
+    },
 
     // Get the y position for the stem
     getStemY: function(){
@@ -247,6 +255,7 @@ Vex.Flow.TabNote = (function() {
           flag_glyph_name = this.duration_data.glyph_name_flag_down;
         } else {
           // Up stems have flags on the left.
+          flag_x -= Stem.WIDTH;
           flag_glyph_name = this.duration_data.glyph_name_flag_up;
         }
 
@@ -287,7 +296,7 @@ Vex.Flow.TabNote = (function() {
 
         // Fine tune x position to match default stem
         if (!this.beam || this.getStemDirection() === 1) {
-          stem_x += (Stem.WIDTH / 2);
+          stem_x -= (Stem.WIDTH / 2) * this.getStemDirection();
         }
 
         ctx.save();

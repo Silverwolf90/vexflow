@@ -7,30 +7,30 @@ Vex.Flow.GraceNote = (function() {
     init: function(note_struct) {
       GraceNote.superclass.init.call(this, note_struct);
 
+
       this.render_options.glyph_font_scale = 0.6;
       this.render_options.stem_height = 20;
       this.render_options.stroke_px = 2;
-      this.glyph.width = 6;
+
+      this.glyph = new Vex.Flow.Glyph(this.duration_data.glyph_name, this.render_options.glyph_font_scale);
 
       this.slash = note_struct.slash;
       this.slur = true;
 
       this.stem.gracenote = true;
       this.buildNoteHeads();
-
-      this.width = 3;
     },
 
     getStemExtension: function(){
-      var glyph = this.getGlyph();
+      var duration_data = this.getDurationData();
 
       if (this.stem_extension_override != null) {
         return this.stem_extension_override;
       }
 
-      if (glyph) {
-        return this.getStemDirection() === 1 ? glyph.gracenote_stem_up_extension :
-          glyph.gracenote_stem_down_extension;
+      if (duration_data) {
+        return this.getStemDirection() === 1 ? duration_data.gracenote_stem_up_extension :
+          duration_data.gracenote_stem_down_extension;
       }
 
       return 0;

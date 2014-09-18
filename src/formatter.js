@@ -285,7 +285,7 @@ Vex.Flow.Formatter = (function() {
         if (note.tuplet && !align_tuplets) continue;
 
         // If activated rests not on default can be rendered as specified.
-        var position = note.getGlyph().position.toUpperCase();
+        var position = note.getDurationData().position.toUpperCase();
         if (position != "R/4" && position != "B/4") {
           continue;
         }

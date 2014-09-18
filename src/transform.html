@@ -43,6 +43,7 @@
   <!-- Replace font below with transform font -->
   <script src="fonts/gonville_all.js"></script>
   <script src="fonts/gonville_map.js"></script>
+  <script src="fonts/gonville_metrics.js"></script>
   <script src="fontloader.js"></script>
   <script src="glyph.js"></script>
   <script>
@@ -164,7 +165,7 @@
         ctx.stroke()
 
         ctx.fillStyle = "green";
-        Vex.Flow.renderGlyph(ctx, x, y, 40, glyph, true);
+        Vex.Flow.renderGlyph(ctx, x, y, glyph, true);
         x += 60;
 
         if (x >= 800) {

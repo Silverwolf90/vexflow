@@ -77,7 +77,7 @@ Vex.Flow.Font.Gonville.Map = {
   // RESTS
   "restDoubleWhole": "v31",
   "restWhole" : "v5c",
-  "restHalf" : "v5c",
+  "restHalf" : "vc",
   "restQuarter" : "v7c",
   "rest8th": "va5",
   "rest16th": "v3c",

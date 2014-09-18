@@ -52,7 +52,7 @@ Vex.Flow.KeySignature = (function() {
       }
 
       // Set the width and place the glyph on the stave
-      glyph.setWidth(glyph_data.width + extra_width);
+      glyph.setWidth(glyph.getWidth() + extra_width);
       this.placeGlyphOnLine(glyph, stave, acc.line);
       stave.addGlyph(glyph);
     },

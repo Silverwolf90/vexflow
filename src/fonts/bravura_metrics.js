@@ -442,74 +442,58 @@ Vex.Flow.Font.Bravura.Metrics = {
 
   // ACCIDENTALS
   "accidentalSharp": {
-    width: 10,
-    gracenote_width: 4.5,
     x_shift: 0,
-    shift_down: 0,
+    y_shift: 0,
     size: 35
   },
   "accidentalDoubleSharp": {
-    width: 13,
-    gracenote_width: 6,
     x_shift: -1,
-    shift_down: 0,
+    y_shift: 0,
     size: 35
   },
   "accidentalFlat": {
-    width: 8,
-    gracenote_width: 4.5,
     x_shift: 0,
-    shift_down: 0,
+    y_shift: 0,
     size: 35
   },
   "accidentalDoubleFlat": {
-    width: 14,
-    gracenote_width: 8,
     x_shift: -3,
-    shift_down: 0,
+    y_shift: 0,
     size: 35
   },
   "accidentalNatural": {
-    width: 8,
-    gracenote_width: 4.5,
     x_shift: 0,
-    shift_down: 0,
+    y_shift: 0,
     size: 35
   },
   "accidentalParensLeft": {
-    width: 5,
     x_shift: 2,
-    shift_down: 0,
+    y_shift: 0,
     size: 35
   },
   "accidentalParensRight": {
-    width: 5,
     x_shift: 0,
-    shift_down: 0,
+    y_shift: 0,
     size: 35
   },
   "accidentalThreeQuarterTonesFlatZimmermann": {
-    width: 16,
     x_shift: 0,
-    shift_down: 0,
+    y_shift: 0,
     size: 35
   },
   "accidentalQuarterToneFlatStein": {
-    width: 10,
     x_shift: 0,
-    shift_down: 0,
+    y_shift: 0,
     size: 35
   },
   "accidentalThreeQuarterTonesSharpStein": {
-    width: 13,
     x_shift: 0,
-    shift_down: 0,
+    y_shift: 0,
     size: 35
   },
   "accidentalQuarterToneSharpStein": {
-    width: 8,
     x_shift: 0,
-    shift_down: 0,
+    y_shift: 0,
     size: 35
   },
 

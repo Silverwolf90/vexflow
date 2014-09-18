@@ -152,8 +152,7 @@ Vex.Flow.Accidental = (function(){
       this.paren_left = null;
       this.paren_right = null;
 
-      // Initial width is set from table.
-      this.setWidth(this.accidental.width);
+      this.buildGlyphs();
     },
 
     // Attach this accidental to `note`, which must be a `StaveNote`.
@@ -164,6 +163,7 @@ Vex.Flow.Accidental = (function(){
       // Accidentals attached to grace notes are rendered smaller.
       if (this.note.getCategory() === 'gracenotes') {
         this.render_options.font_scale = 0.6;
+        this.buildGlyphs();
         this.setWidth(this.accidental.gracenote_width);
       }
     },
@@ -171,14 +171,26 @@ Vex.Flow.Accidental = (function(){
     // If called, draws parenthesis around accidental.
     setAsCautionary: function() {
       this.cautionary = true;
-      this.render_options.font_scale = 0.75;
+      this.render_options.font_scale = 0.9;
       this.paren_left = Vex.Flow.accidentalCodes("{");
       this.paren_right = Vex.Flow.accidentalCodes("}");
-      var width_adjust = (this.type == "##" || this.type == "bb") ? 6 : 4;
-
-      // Make sure `width` accomodates for parentheses.
-      this.setWidth(this.paren_left.width + this.accidental.width + this.paren_right.width - width_adjust);
+      this.buildGlyphs();
       return this;
+    },
+
+    buildGlyphs: function(){
+      var width = 0;
+      this.glyph = new Vex.Flow.Glyph(this.accidental.glyph_name, this.render_options.font_scale);
+      width += this.glyph.getWidth();
+
+      if (this.cautionary) {
+        this.paren_left_glyph = new Vex.Flow.Glyph(this.paren_left.glyph_name, this.render_options.font_scale);
+        this.paren_right_glyph = new Vex.Flow.Glyph(this.paren_right.glyph_name, this.render_options.font_scale);
+        width += this.paren_left_glyph.getWidth() + this.paren_right_glyph.getWidth();
+      }
+
+      // Initial width is set from table.
+      this.setWidth(width);
     },
 
     // Render accidental onto canvas.
@@ -197,18 +209,16 @@ Vex.Flow.Accidental = (function(){
       var scale = this.render_options.font_scale;
       if (!this.cautionary) {
         // Render the accidental alone.
-        Vex.Flow.renderGlyph(this.context, acc_x, acc_y, scale, this.accidental.glyph_name);
+        this.glyph.render(this.context, acc_x, acc_y);
       } else {
         // Render the accidental in parentheses.
-        acc_x += 3;
-        Vex.Flow.renderGlyph(this.context, acc_x, acc_y, scale, this.paren_left.glyph_name);
-        acc_x += 2;
-        Vex.Flow.renderGlyph(this.context, acc_x, acc_y, scale, this.accidental.glyph_name);
+        this.paren_left_glyph.render(this.context, acc_x, acc_y) ;
+        acc_x += this.paren_left_glyph.getWidth() + 1;
+        
+        this.glyph.render(this.context, acc_x, acc_y);
   
-        acc_x += this.accidental.width - 2;
-        if (this.type == "##" || this.type == "bb") acc_x -= 2;
-        Vex.Flow.renderGlyph(this.context, acc_x, acc_y, scale, this.paren_right.glyph_name);
-      
+        acc_x += this.glyph.getWidth();
+        this.paren_right_glyph.render(this.context, acc_x, acc_y);
       }
     }
   });

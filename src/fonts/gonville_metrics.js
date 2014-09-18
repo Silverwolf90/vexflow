@@ -453,74 +453,58 @@ Vex.Flow.Font.Gonville.Metrics = {
 
   // ACCIDENTALS
   "accidentalSharp": {
-    width: 10,
-    gracenote_width: 4.5,
     x_shift: 0,
-    shift_down: 0,
+    y_shift: 0,
     size: 38
   },
   "accidentalDoubleSharp": {
-    width: 13,
-    gracenote_width: 6,
     x_shift: -1,
-    shift_down: 0,
+    y_shift: 0,
     size: 38
   },
   "accidentalFlat": {
-    width: 8,
-    gracenote_width: 4.5,
     x_shift: 0,
-    shift_down: 0,
+    y_shift: 0,
     size: 38
   },
   "accidentalDoubleFlat": {
-    width: 14,
-    gracenote_width: 8,
     x_shift: -3,
-    shift_down: 0,
+    y_shift: 0,
     size: 38
   },
   "accidentalNatural": {
-    width: 8,
-    gracenote_width: 4.5,
     x_shift: 0,
-    shift_down: 0,
+    y_shift: 0,
     size: 38
   },
   "accidentalParensLeft": {   // Left paren for cautionary accidentals
-    width: 5,
     x_shift: 2,
-    shift_down: 0,
+    y_shift: 0,
     size: 38
   },
   "accidentalParensRight": {   // Right paren for cautionary accidentals
-    width: 5,
     x_shift: 0,
-    shift_down: 0,
+    y_shift: 0,
     size: 38
   },
   "accidentalThreeQuarterTonesFlatZimmermann": {
-    width: 16,
     x_shift: 0,
-    shift_down: 0,
+    y_shift: 0,
     size: 38
   },
   "accidentalQuarterToneFlatStein": {
-    width: 10,
     x_shift: 0,
-    shift_down: 0,
+    y_shift: 0,
     size: 38
   },
   "accidentalThreeQuarterTonesSharpStein": {
-    width: 13,
     x_shift: 0,
-    shift_down: 0,
+    y_shift: 0,
     size: 38
   },
   "accidentalQuarterToneSharpStein": {
-    width: 8,
     x_shift: 0,
-    shift_down: 0,
+    y_shift: 0,
     size: 38
   },
 

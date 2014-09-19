@@ -78,8 +78,8 @@ Vex.Flow.NoteHead = (function() {
 
       // Get glyph code based on duration and note type. This could be
       // regular notes, rests, or other custom codes.
-      var durationData = Vex.Flow.durationToGlyph(this.duration, this.note_type);
-      if (!durationData) {
+      this.duration_data = Vex.Flow.durationToGlyph(this.duration, this.note_type);
+      if (!this.duration_data) {
         throw new Vex.RuntimeError("BadArguments",
             "No glyph found for duration '" + this.duration +
             "' and type '" + this.note_type + "'");
@@ -90,7 +90,7 @@ Vex.Flow.NoteHead = (function() {
         this.custom_glyph = true;
         this.glyph_name = head_options.custom_glyph_code;
       } else {
-        this.glyph_name = durationData.glyph_name;
+        this.glyph_name = this.duration_data.glyph_name;
       }
 
 
@@ -232,7 +232,7 @@ Vex.Flow.NoteHead = (function() {
         }        
       }
 
-      if (this.note_type == "s") {
+      if (this.note_type == "s" && this.getDurationData().glyph_missing) {
         drawSlashNoteHead(ctx, this.duration,
           head_x, y, stem_direction);
       } else {

@@ -155,92 +155,92 @@ Vex.Flow.Font.Bravura.Metrics = {
   //NOTEHEADS
   //Normal
   "noteheadDoubleWhole": {
-    stem_offset: 0,
+    stem_y_offset: 0,
     size: 35
   },
   "noteheadWhole": {
-    stem_offset: 0,
+    stem_y_offset: 0,
     size: 35
   },
   "noteheadHalf": {
-    stem_offset: 0,
+    stem_y_offset: 0,
     size: 35
   },
   "noteheadBlack": {
-    stem_offset: 0,
+    stem_y_offset: 0,
     size: 35
   },
 
   // Diamond
   "noteheadDiamondDoubleWhole": {
-    stem_offset: 0,
+    stem_y_offset: 0,
     size: 35
   },
   "noteheadDiamondWhole": {
-    stem_offset: 0,
+    stem_y_offset: 0,
     size: 35
   },
   "noteheadDiamondHalf": {
-    stem_offset: 0,
+    stem_y_offset: 0,
     size: 35
   },
   "noteheadDiamondBlack": {
-    stem_offset: 2,
+    stem_y_offset: 2,
     size: 35
   },
 
   //TRIANGLE
   "noteheadTriangleUpWhole":{
-    stem_offset: 0,
+    stem_y_offset: 0,
     size: 35
   },
   "noteheadTriangleUpHalf":{
-    stem_offset: 0,
+    stem_y_offset: 0,
     size: 35
   },
   "noteheadTriangleUpBlack": {
-    stem_offset: 0,
+    stem_y_offset: 0,
     size: 35
   },
 
   // X
   "noteheadXDoubleWhole": {
-    stem_offset: 0,
+    stem_y_offset: 0,
     size: 35
   },
   "noteheadXWhole": {
-    stem_offset: -3,
+    stem_y_offset: -3,
     size: 35,
   },
   "noteheadXHalf": {
-    stem_offset: -3,
+    stem_y_offset: -3,
     size: 35,
   },
   "noteheadXBlack": {
-    stem_offset: -3,
+    stem_y_offset: -3,
     size: 35
   },
   "noteheadXOrnate": {
-    stem_offset: 0,
+    stem_y_offset: 0,
     size: 35
   },
   "noteheadCircleX": {},
   
   // Slash
   "noteheadSlashDoubleWhole": { // Doesn't exist in SMuFL
-    stem_offset: 0,
+    stem_y_offset: 7,
     size: 35
   },
   "noteheadSlashWhiteWhole": {
-    stem_offset: 0,
+    stem_y_offset: 7,
     size: 35
   },
   "noteheadSlashWhiteHalf": {
-    stem_offset: 0,
+    stem_y_offset: 7,
     size: 35
   },
   "noteheadSlashHorizontalEnds": {
-    stem_offset: 0,
+    stem_y_offset: 7,
     size: 35
   },
 

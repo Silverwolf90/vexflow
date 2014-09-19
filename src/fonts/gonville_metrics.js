@@ -217,20 +217,28 @@ Vex.Flow.Font.Gonville.Metrics = {
   
   // Slash
   "noteheadSlashDoubleWhole": { // Doesn't exist in SMuFL
-    stem_offset: 0,
-    size: 35
+    glyph_missing: true,
+    stem_y_offset: 7,
+    size: 35,
+    width: 16
   },
   "noteheadSlashWhiteWhole": {
-    stem_offset: 0,
-    size: 35
+    glyph_missing: true,
+    stem_y_offset: 7,
+    size: 35,
+    width: 16
   },
   "noteheadSlashWhiteHalf": {
-    stem_offset: 0,
-    size: 35
+    glyph_missing: true,
+    stem_y_offset: 7,
+    size: 35,
+    width: 16
   },
   "noteheadSlashHorizontalEnds": {
-    stem_offset: 0,
-    size: 35
+    glyph_missing: true,
+    stem_y_offset: 7,
+    size: 35,
+    width: 16
   },
 
   // RESTS

@@ -318,7 +318,8 @@ Vex.Flow.StaveNote = (function() {
       }
 
       var stem = new Stem({
-        y_extend: y_extend
+        y_extend: y_extend,
+        y_offset: duration_data.stem_y_offset
       });
 
       if (this.isRest()) {
@@ -562,7 +563,7 @@ Vex.Flow.StaveNote = (function() {
 
       var bounds = this.getNoteHeadBounds();
       if(!this.beam){
-	this.stem.setYBounds(bounds.y_top, bounds.y_bottom);
+	      this.stem.setYBounds(bounds.y_top, bounds.y_bottom);
       }
 
       return this;
@@ -801,8 +802,11 @@ Vex.Flow.StaveNote = (function() {
 
     // Get the ending `x` coordinate for the noteheads
     getNoteHeadEndX: function(){
+      var duration_data = this.getDurationData();
+      var width = duration_data.glyph_missing ? duration_data.width : this.glyph.getWidth();
       var x_begin = this.getNoteHeadBeginX();
-      return x_begin + this.glyph.getWidth();
+
+      return x_begin + width;
     },
 
     // Draw the ledger lines between the stave and the highest/lowest keys
@@ -867,7 +871,8 @@ Vex.Flow.StaveNote = (function() {
       var ctx = this.context;
       var duration_data = this.getDurationData();
       var render_flag = this.beam === null;
-      var bounds = this.getNoteHeadBounds();
+      var y_top = this.stem.getStemTopY();
+      var y_bottom = this.stem.getStemBottomY();
 
       var stem_x = this.getStemX();
 
@@ -878,13 +883,13 @@ Vex.Flow.StaveNote = (function() {
         if (this.getStemDirection() === Stem.DOWN) {
           // Down stems have flags on the left.
           flag_x = stem_x + (duration_data.down_x_shift || 0);
-          flag_y = bounds.y_top - note_stem_height + (duration_data.down_y_shift || 0);
+          flag_y = y_top - note_stem_height + (duration_data.down_y_shift || 0);
           flag_glyph_name = duration_data.glyph_name_flag_down;
 
         } else {
           // Up stems have flags on the left.
           flag_x = stem_x + (duration_data.up_x_shift || 0);
-          flag_y = bounds.y_bottom - note_stem_height + (duration_data.up_y_shift || 0);
+          flag_y = y_bottom - note_stem_height + (duration_data.up_y_shift || 0);
           flag_glyph_name = duration_data.glyph_name_flag_up;
         }
         // Draw the Flag

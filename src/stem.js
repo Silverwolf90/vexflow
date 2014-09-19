@@ -44,6 +44,9 @@ Vex.Flow.Stem = (function() {
       // Is a gracenote stem?
       this.gracenote = options.gracenote || false;
 
+      // Y offsets of the stem
+      this.y_offset = options.y_offset || 0;
+
       // Flag to override all draw calls
       this.hide = false;
     },
@@ -109,7 +112,18 @@ Vex.Flow.Stem = (function() {
         }
       }
 
+
       return { topY: top_pixel, baseY: base_pixel };
+    },
+
+    getStemTopY: function(){
+      var y_offset = -this.stem_direction * this.y_offset;
+      return this.y_top + y_offset;
+    },
+    
+    getStemBottomY: function(){
+      var y_offset = -this.stem_direction * this.y_offset;
+      return this.y_bottom + y_offset;
     },
 
     // Render the stem onto the canvas
@@ -122,20 +136,20 @@ Vex.Flow.Stem = (function() {
       var ctx = this.context;
       var stem_x, stem_y;
       var stem_direction = this.stem_direction;
-
+      
       if (stem_direction == Stem.DOWN) {
         // Down stems are rendered to the left of the head.
         stem_x = this.x_begin + (Stem.WIDTH / 2);
-        stem_y = this.y_top + 1.5;
+        stem_y = this.getStemTopY() + 1.5;
       } else {
         // Up stems are rendered to the right of the head.
         stem_x = this.x_end - (Stem.WIDTH / 2);
-        stem_y = this.y_bottom - 1.5;
+        stem_y = this.getStemBottomY() - 1.5;
       }
 
       stem_y += this.y_extend * stem_direction;
 
-      L("Rendering stem - ", "Top Y: ", this.y_top, "Bottom Y: ", this.y_bottom);
+      L("Rendering stem - ", "Top Y: ", this.getStemTopY(), "Bottom Y: ", this.getStemBottomY());
 
       // Draw the stem
       ctx.save();

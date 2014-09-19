@@ -199,9 +199,6 @@ Vex.Flow.Beam = (function() {
         var base_y_px = y_extents.baseY;
         var top_y_px = y_extents.topY;
 
-        // For harmonic note heads, shorten stem length by 3 pixels
-        base_y_px += this.stem_direction + (note.getDurationData().stem_offset || 0);
-
         // Don't go all the way to the top (for thicker stems)
         var y_displacement = Vex.Flow.STEM_WIDTH;
 
@@ -239,14 +236,14 @@ Vex.Flow.Beam = (function() {
                         this.slope) + this.y_shift;
 
         var stemHeight = note.stem.getDefaultHeight();
-      
+
         note.setStem(new Vex.Flow.Stem({
           x_begin: x_px,
           x_end: x_px,
           y_top: this.stem_direction === 1 ? top_y_px : base_y_px,
           y_bottom: this.stem_direction === 1 ? base_y_px :  top_y_px ,
-          y_extend: y_displacement,
-          stem_extension: Math.abs(top_y_px - slope_y) - stemHeight - 1,
+          y_extend: 0,
+          stem_extension: Math.abs(top_y_px - slope_y) - stemHeight - 2,
           stem_direction: this.stem_direction,
           gracenote: note.stem.gracenote
         }));
@@ -297,6 +294,12 @@ Vex.Flow.Beam = (function() {
             beam_started = true;
           } else {
             current_beam = beam_lines[beam_lines.length - 1];
+
+            // Extend through the full width of the stem
+            if (note.getStemDirection() === -1) {
+              stem_x += Stem.WIDTH/2;
+            }
+
             current_beam.end = stem_x;
 
             // Should break secondary beams on note

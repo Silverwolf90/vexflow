@@ -401,7 +401,7 @@ Vex.Flow.Test.StaveNote.tickContext = function() {
   tickContext.setX(10);
   tickContext.setPadding(0);
 
-  equal(tickContext.getWidth(), 16);
+  equal(tickContext.getWidth(), note.glyph.getWidth());
 }
 
 Vex.Flow.Test.StaveNote.showNote = function(note_struct, stave, ctx, x, drawBoundingBox) {

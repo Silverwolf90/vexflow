@@ -20,119 +20,91 @@ Vex.Flow.TextNote = (function() {
   TextNote.GLYPHS = {
     "segno": {
       code: "segno",
-      point: 40,
       x_shift: 0,
       y_shift: -10
-      // width: 10 // optional
     },
     "tr": {
       code: "ornamentTrill",
-      point: 40,
       x_shift: 0,
       y_shift: 0
-      // width: 10 // optional
     },
     "mordent_upper": {
       code: "ornamentMordent",
-      point: 40,
       x_shift: 0,
       y_shift: 0
-      // width: 10 // optional
     },
     "mordent_lower": {
       code: "ornamentMordentInverted",
-      point: 40,
       x_shift: 0,
       y_shift: 0
-      // width: 10 // optional
     },
     "f": {
       code: "dynamicForte",
-      point: 40,
       x_shift: 0,
       y_shift: 0
-      // width: 10 // optional
     },
     "p": {
       code: "dynamicPiano",
-      point: 40,
       x_shift: 0,
       y_shift: 0
-      // width: 10 // optional
     },
     "m": {
       code: "dynamicMezzo",
-      point: 40,
       x_shift: 0,
       y_shift: 0
-      // width: 10 // optional
     },
     "s": {
       code: "dynamicSforzando",
-      point: 40,
       x_shift: 0,
       y_shift: 0
-      // width: 10 // optional
     },
     "z": {
       code: "dynamicZ",
-      point: 40,
       x_shift: 0,
       y_shift: 0
-      // width: 10 // optional
     },
     "coda": {
       code: "coda",
-      point: 40,
       x_shift: 0,
       y_shift: -8
-      // width: 10 // optional
     },
     "pedal_open": {
       code: "keyboardPedalPed",
-      point:40,
       x_shift:0,
       y_shift:0
     },
     "pedal_close": {
       code: "keyboardPedalUp",
-      point:40,
       x_shift:0,
       y_shift:3
     },
     "caesura_straight": {
       code: "caesura",
-      point:40,
       x_shift:0,
       y_shift:2
     },
     "caesura_curved": {
       code: "caesuraCurved",
-      point:40,
       x_shift:0,
       y_shift:2
     },
     "breath": {
       code: "breathMarkComma",
-      point:40,
       x_shift:0,
       y_shift:0
     },
     "tick": {
       code: "breathMarkTick",
-      point:50,
       x_shift:0,
       y_shift:0
     },
     "turn": {
       code: "ornamentTurn",
-      point:40,
       x_shift:0,
       y_shift:0
     },
     "turn_inverted": {
       code: "ornamentTurnSlash",
-      point:40,
       x_shift:0,
       y_shift:0
     },
@@ -140,10 +112,8 @@ Vex.Flow.TextNote = (function() {
     // DEPRECATED - please use "mordent_upper" or "mordent_lower"
     "mordent": {
       code: "ornamentMordent",
-      point: 40,
       x_shift: 0,
       y_shift: 0
-      // width: 10 // optional
     },
   };
 
@@ -174,13 +144,9 @@ Vex.Flow.TextNote = (function() {
         var struct = TextNote.GLYPHS[this.glyph_type];
         if (!struct) throw new Vex.RERR("Invalid glyph type: " + this.glyph_type);
 
-        this.glyph = new Vex.Flow.Glyph(struct.code, struct.point, {cache: false});
+        this.glyph = new Vex.Flow.Glyph(struct.code);
 
-        if (struct.width)
-          this.setWidth(struct.width);
-        else
-          this.setWidth(this.glyph.getMetrics().width);
-
+        this.setWidth(this.glyph.getWidth());
         this.glyph_struct = struct;
       } else {
         this.setWidth(Vex.Flow.textWidth(this.text));

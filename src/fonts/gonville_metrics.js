@@ -625,27 +625,27 @@ Vex.Flow.Font.Gonville.Metrics = {
 
   // DYNAMICS
   "dynamicForte": {
-    width: 12,
+    kerning: 0.55,
     size: 40
   },
   "dynamicPiano": {
-    width: 14,
+    kerning: 0.85,
     size: 40
   },
   "dynamicMezzo": {
-    width: 17,
+    kerning: 1.0,
     size: 40
   },
   "dynamicSforzando": {
-    width: 10,
+    kerning: 1.11,
     size: 40
   },
   "dynamicZ": {
-    width: 12,
+    kerning: 1.0,
     size: 40
   },
   "dynamicRinforzando": {
-    width: 12,
+    kerning: 1.08,
     size: 40
   },
 

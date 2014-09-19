@@ -594,28 +594,28 @@ Vex.Flow.Font.Bravura.Metrics = {
 
   // DYNAMICS
   "dynamicForte": {
-    width: 12,
-    size: 35
+    kerning: 0.78,
+    size: 40
   },
   "dynamicPiano": {
-    width: 14,
-    size: 35
+    kerning: 1.0,
+    size: 40
   },
   "dynamicMezzo": {
-    width: 17,
-    size: 35
+    kerning: 1.0,
+    size: 40
   },
   "dynamicSforzando": {
-    width: 10,
-    size: 35
+    kerning: 1.11,
+    size: 40
   },
   "dynamicZ": {
-    width: 12,
-    size: 35
+    kerning: 1.0,
+    size: 40
   },
   "dynamicRinforzando": {
-    width: 12,
-    size: 35
+    kerning: 1.08,
+    size: 40
   },
 
   // REPEATS

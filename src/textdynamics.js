@@ -62,8 +62,7 @@ Vex.Flow.TextDynamics = (function(){
 
         // Add the glyph
         this.glyphs.push(glyph);
-
-        total_width += glyph_data.width;
+        total_width += glyph.getWidth() * (glyph_data.kerning || 1.0);
       }, this);
 
       // Store the width of the text
@@ -85,7 +84,8 @@ Vex.Flow.TextDynamics = (function(){
         glyph.render(this.context, letter_x, y);
         var smuflName = TextDynamics.GLYPHS[current_letter];
         var glyph_data = Vex.Flow.Font.Metrics[smuflName];
-        letter_x += glyph_data.width;
+
+        letter_x += glyph.getWidth() * (glyph_data.kerning || 1.0);
       }, this);
     }
   });

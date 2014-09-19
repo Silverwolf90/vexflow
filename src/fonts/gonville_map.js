@@ -41,6 +41,7 @@ Vex.Flow.Font.Gonville.Map = {
   "tuplet7": "v7",
   "tuplet8": "v8",
   "tuplet9": "v9",
+  "tupletColon": "v",
 
   //NOTEHEADS
   //Normal

@@ -140,6 +140,10 @@ Vex.Flow.Font.Gonville.Metrics = {
   "tuplet9": {
     size: 28
   },
+  "tupletColon": {
+    size: 28,
+    glyph_missing: true
+  },
 
   //NOTEHEADS
   //Normal

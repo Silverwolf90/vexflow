@@ -32,7 +32,7 @@ Vex.Flow.Tuplet = (function() {
       this.bracketed = (notes[0].beam == null);
       this.ratioed = false;
       this.point = Vex.Flow.FontLoader.getFontSize('tuplet0');
-      this.y_pos = 16;
+      this.y_pos = 20;
       this.x_pos = 100;
       this.width = 200;
       this.location = Tuplet.LOCATION_TOP;
@@ -124,6 +124,11 @@ Vex.Flow.Tuplet = (function() {
         this.denom_glyphs.push(new Vex.Flow.Glyph("tuplet" + (n % 10)));
         n = parseInt(n / 10, 10);
       }
+
+      var metrics = Vex.Flow.Font.Metrics["tupletColon"];
+      if (!metrics.glyph_missing) {
+        this.colon_glyph = new Vex.Flow.Glyph('tupletColon');
+      }
     },
 
     draw: function() {
@@ -146,8 +151,7 @@ Vex.Flow.Tuplet = (function() {
       // determine y value for tuplet
       var i;
       if (this.location == Tuplet.LOCATION_TOP) {
-        this.y_pos = first_note.getStave().getYForLine(0) - 15;
-        //this.y_pos = first_note.getStemExtents().topY - 10;
+        this.y_pos = first_note.getStave().getYForLine(0) - 25;
 
         for (i=0; i<this.notes.length; ++i) {
           var top_y = this.notes[i].getStemExtents().topY - 10;
@@ -156,7 +160,7 @@ Vex.Flow.Tuplet = (function() {
         }
       }
       else {
-        this.y_pos = first_note.getStave().getYForLine(4) + 20;
+        this.y_pos = first_note.getStave().getYForLine(4) + 15;
 
         for (i=0; i<this.notes.length; ++i) {
           var bottom_y = this.notes[i].getStemExtents().topY + 10;
@@ -206,35 +210,44 @@ Vex.Flow.Tuplet = (function() {
         var numerator_glyph =this.num_glyphs[size-glyph-1];
         numerator_glyph.render(
             this.context, notation_start_x + x_offset,
-            this.y_pos + (this.point/3) - 2);
-        x_offset += this.num_glyphs[size-glyph-1].getMetrics().width;
+            this.y_pos + 8);
+        x_offset += this.num_glyphs[size-glyph-1].getWidth();
       }
 
       // display colon and denominator if the ratio is to be shown
       if (this.ratioed) {
-        var colon_x = notation_start_x + x_offset + this.point*0.16;
-        var colon_radius = this.point * 0.06;
-        this.context.beginPath();
-        this.context.arc(colon_x, this.y_pos - this.point*0.08,
-                         colon_radius, 0, Math.PI*2, true);
-        this.context.closePath();
-        this.context.fill();
-        this.context.beginPath();
-        this.context.arc(colon_x, this.y_pos + this.point*0.12,
-                         colon_radius, 0, Math.PI*2, true);
-        this.context.closePath();
-        this.context.fill();
+        if (!this.colon_glyph) {
+          drawColon(this.context, this.point, notation_start_x, this.y_pos, x_offset);
+        } else {
+          this.colon_glyph.render(this.context, notation_start_x + x_offset + 3, this.y_pos + 8);
+        }
+
         x_offset += this.point*0.32;
         size = this.denom_glyphs.length;
         for (glyph in this.denom_glyphs) {
           this.denom_glyphs[size-glyph-1].render(
               this.context, notation_start_x + x_offset,
-              this.y_pos + (this.point/3) - 2);
-          x_offset += this.denom_glyphs[size-glyph-1].getMetrics().width;
+              this.y_pos + 8);
+          x_offset += this.denom_glyphs[size-glyph-1].getWidth();
         }
       }
     }
   };
+
+  function drawColon(context, point, x_pos, y_pos, x_offset) {
+    var colon_x = x_pos + x_offset + point*0.16;
+    var colon_radius = point * 0.06;
+    context.beginPath();
+    context.arc(colon_x, y_pos - point*0.08,
+                     colon_radius, 0, Math.PI*2, true);
+    context.closePath();
+    context.fill();
+    context.beginPath();
+    context.arc(colon_x, y_pos + point*0.12,
+                     colon_radius, 0, Math.PI*2, true);
+    context.closePath();
+    context.fill();
+  }
 
   return Tuplet;
 }());

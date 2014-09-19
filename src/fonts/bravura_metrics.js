@@ -151,6 +151,9 @@ Vex.Flow.Font.Bravura.Metrics = {
   "tuplet9": {
     size: 35
   },
+  "tupletColon": {
+    size: 40
+  },
 
   //NOTEHEADS
   //Normal

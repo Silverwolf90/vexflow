@@ -30,7 +30,7 @@ Vex.Flow.StaveModifier = (function() {
     },
 
     placeGlyphOnLine: function(glyph, stave, line) {
-      glyph.setYShift(stave.getYForLine(line) - stave.getYForGlyphs());
+      glyph.setYShift(stave.getYForLine(line) + (Vex.Flow.STAVE_LINE_THICKNESS/2) - stave.getYForGlyphs());
     },
 
     setPadding: function(padding) {

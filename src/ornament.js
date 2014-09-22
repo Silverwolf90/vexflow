@@ -15,70 +15,6 @@ Vex.Flow.Ornament = (function() {
   }
   Ornament.CATEGORY = "ornaments";
 
-  // Accidental position modifications for each glyph
-  var acc_mods = {
-    "n": {
-      shift_x: 1,
-      shift_y_upper:0,
-      shift_y_lower:0,
-      height: 17
-    },
-    "#": {
-      shift_x: 0,
-      shift_y_upper: -2,
-      shift_y_lower: -2,
-      height: 20
-    },
-    "b": {
-      shift_x: 1,
-      shift_y_upper: 0,
-      shift_y_lower: 3,
-      height: 18
-    },
-    "##": {
-      shift_x: 0,
-      shift_y_upper: 0,
-      shift_y_lower: 0,
-      height: 12,
-    },
-    "bb": {
-      shift_x: 0,
-      shift_y_upper: 0,
-      shift_y_lower: 4,
-      height: 17
-    },
-    "db": {
-      shift_x: -3,
-      shift_y_upper: 0,
-      shift_y_lower: 4,
-      height: 17
-    },
-    "bbs": {
-      shift_x: 0,
-      shift_y_upper: 0,
-      shift_y_lower: 4,
-      height: 17
-    },
-    "d": {
-      shift_x: 0,
-      shift_y_upper: 0,
-      shift_y_lower: 0,
-      height: 17
-    },
-    "++": {
-      shift_x: -2,
-      shift_y_upper: -6,
-      shift_y_lower: -3,
-      height: 22
-    },
-    "+": {
-      shift_x: 1,
-      shift_y_upper: -4,
-      shift_y_lower: -2,
-      height: 20
-    }
-  };
-
   // To enable logging for this class. Set `Vex.Flow.Ornament.DEBUG` to `true`.
   function L() { if (Ornament.DEBUG) Vex.L("Vex.Flow.Ornament", arguments); }
 
@@ -134,6 +70,9 @@ Vex.Flow.Ornament = (function() {
          "Ornament not found: '" + this.type + "'");
 
       this.glyph = new Vex.Flow.Glyph(this.ornament.glyph_name);
+
+      this.glyph.setHorizontalOrigin('center');
+      this.glyph.setVerticalOrigin('bottom');
 
       // Default width comes from ornament table.
       this.setWidth(this.glyph.getWidth());
@@ -211,7 +150,7 @@ Vex.Flow.Ornament = (function() {
 
       // Get initial coordinates for the modifier position
       var start = this.note.getModifierStartXY(this.position, this.index);
-      var glyph_x = start.x - (this.width/2);
+      var glyph_x = start.x;
       var glyph_y = Math.min(stave.getYForTopText(this.text_line) - 3, glyph_y_between_lines);
       glyph_y += this.ornament.shift_up + this.y_shift;
 
@@ -230,31 +169,18 @@ Vex.Flow.Ornament = (function() {
       function drawAccidental(ctx, code, upper) {
         var accidental = Vex.Flow.accidentalCodes(code);
 
-        var acc_x = glyph_x - 3;
-        var acc_y = glyph_y + 2;
+        var accGlyph = new Vex.Flow.Glyph(accidental.glyph_name, 0.75);
 
-        // Special adjustments for trill glyph
-        if (upper) {
-          acc_y -= mods ? mods.height : 18;
-          acc_y +=  ornament.type === "tr" ? -8 : 0;
-        } else {
-          acc_y +=  ornament.type === "tr" ? -6 : 0;
-        }
-
-        // Fine tune position of accidental glyph
-        var mods = acc_mods[code];
-        if (mods) {
-          acc_x += mods.shift_x;
-          acc_y += upper ? mods.shift_y_upper : mods.shift_y_lower;
-        }
+        accGlyph.setHorizontalOrigin('center');
+        accGlyph.setVerticalOrigin('bottom');
 
         // Render the glyph
-        Vex.Flow.renderGlyph(ctx, acc_x, acc_y, 0.75, accidental.glyph_name);
+        accGlyph.render(ctx, glyph_x, glyph_y );
 
         // If rendered a bottom accidental, increase the y value by the
         // accidental height so that the ornament's glyph is shifted up
         if (!upper) {
-          glyph_y -= mods ? mods.height : 18;
+          glyph_y -= accGlyph.getHeight() + 2;
         }
       }
 
@@ -265,6 +191,8 @@ Vex.Flow.Ornament = (function() {
 
       L("Rendering ornament: ", this.ornament, glyph_x, glyph_y);
       glyph.render(ctx, glyph_x, glyph_y);
+
+      glyph_y -= this.glyph.getHeight() + 1;
 
       // Draw upper accidental for ornament
       if (this.accidental_upper) {

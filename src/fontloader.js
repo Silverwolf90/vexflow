@@ -42,6 +42,12 @@ Vex.Flow.FontLoader = {
     var x_max = typeof glyph.x_max === 'number' ? glyph.x_max : glyph.xMax;
     var ha = glyph.ha || (glyph.yMax - glyph.yMin);
 
+    if (glyph.bb) {
+      ha = glyph.bb.NW.y - glyph.bb.SW.y;
+    } else {
+      ha = glyph.ha;
+    }
+
     var outline;
 
     if (glyph.o) {
@@ -62,7 +68,8 @@ Vex.Flow.FontLoader = {
         x_max: x_max,
         advanceWidth: glyph.advanceWidth || null,
         ha: ha,
-        outline: outline
+        outline: outline,
+        bb: glyph.bb
       };
     } else {
       throw new Vex.RuntimeError("BadGlyph", "Glyph " + glyph_name +

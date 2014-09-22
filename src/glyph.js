@@ -46,6 +46,11 @@ Vex.Flow.Glyph = (function() {
     this.y_shift = 0;
     this.rotation = 0;
 
+    this.origin_horizontal = "default";
+    this.origin_vertical = "default";
+    this.origin_y_shift = 0;
+    this.origin_x_shift = 0;
+
     if (options) this.setOptions(options); else this.reset();
   }
 
@@ -75,9 +80,65 @@ Vex.Flow.Glyph = (function() {
       if (this.metrics.advanceWidth){
         this.scale = 1 / this.options.font.resolution * this.point;
         this.setWidth(this.metrics.advanceWidth * this.scale);
-      } else {
+        this.setHeight(this.metrics.ha * 250 * this.scale);
+        this.setBoundingBox(this.metrics.bb);
+      } else { // Gonville seems to have some weird font handling
         this.scale = this.point * 72 / (this.options.font.resolution * 100);
         this.setWidth((this.metrics.x_max - this.metrics.x_min) * this.scale);
+        this.setHeight(this.metrics.ha * this.scale);
+      }
+    },
+
+    setBoundingBox: function(bb) {
+      this.bb =  {
+        "nw": {
+          x: bb.NW.x * 250 * this.scale,
+          y: bb.NW.y * 250 * this.scale,
+        },
+        "sw": {
+          x: bb.SW.x * 250 * this.scale,
+          y: bb.SW.y * 250 * this.scale,
+        },
+        "ne": {
+          x: bb.NE.x * 250 * this.scale,
+          y: bb.NE.y * 250 * this.scale,
+        },
+        "se": {
+          x: bb.SE.x * 250 * this.scale,
+          y: bb.SE.y * 250 * this.scale,
+        },
+      };
+    },
+
+    setVerticalOrigin: function(origin) {
+      var originShifts = {
+        'bottom': this.bb.sw.y,
+        'top': this.bb.nw.y,
+        'center': this.bb.sw.y + (this.height / 2),
+        'default': 0
+      };
+
+      this.origin_y = origin;
+      this.origin_y_shift = originShifts[origin];
+
+      if (this.origin_y_shift === undefined) {
+        throw new Vex.RuntimeError('Invalid horizontal origin');
+      }
+    },
+
+    setHorizontalOrigin: function(origin) {
+      var originShifts = {
+        'left': this.bb.sw.x,
+        'right': this.bb.sw.x - this.getWidth(),
+        'center': this.bb.sw.x - this.getCenterWidth(),
+        'default': 0
+      };
+
+      this.origin_x = origin;
+      this.origin_x_shift = originShifts[origin];
+
+      if (this.origin_x_shift === undefined) {
+        throw new Vex.RuntimeError('Invalid vertical origin');
       }
     },
 
@@ -86,9 +147,13 @@ Vex.Flow.Glyph = (function() {
       return this;
     },
 
-    getWidth: function(){
-      return this.width;
+    setHeight: function(height) {
+      this.height = height;
+      return this;
     },
+
+    getWidth: function(){ return this.width; },
+    getHeight: function(){ return this.height; },
 
     getCenterWidth: function(){
       return this.width / 2;
@@ -141,7 +206,7 @@ Vex.Flow.Glyph = (function() {
         ctx.translate(-x_pos, -y_pos);
       }
 
-      Glyph.renderOutline(ctx, outline, scale, x_pos, y_pos);
+      Glyph.renderOutline(ctx, outline, scale, x_pos + this.origin_x_shift, y_pos + this.origin_y_shift);
 
       if (Glyph.DEBUG){
         Vex.drawCross(ctx, x_pos, y_pos);

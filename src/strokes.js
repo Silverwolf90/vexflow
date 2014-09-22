@@ -177,20 +177,47 @@ Vex.Flow.Stroke = (function() {
           break;
       }
 
+      var arrowHeadGlyph = new Vex.Flow.Glyph(arrow);
+
       // Draw the stroke
       if (this.type == Stroke.Type.BRUSH_DOWN ||
           this.type == Stroke.Type.BRUSH_UP) {
         this.context.fillRect(x + this.x_shift, topY, 1, botY - topY);
+        arrow_shift_x = -arrowHeadGlyph.getCenterWidth();
+
       } else {
+        var isDown = this.type === Stroke.Type.ROLL_DOWN || this.type === Stroke.Type.RASQUEDO_DOWN;
+        var wiggleType = isDown ? "wiggleArpeggiatoUp" : "wiggleArpeggiatoDown";
+        var rotation = 0;
+
+        if (Vex.Flow.Font.Metrics[wiggleType].direction === "horizontal") {
+          if (isDown) {
+            rotation = -90;
+            this.x_shift += arrowHeadGlyph.getWidth() /3;
+          } else {
+            rotation = 90;
+            topY -= line_space;
+            botY -= line_space;
+            arrow_y -= line_space;
+          }
+          arrow_shift_x = -arrowHeadGlyph.getWidth()/4;
+        } else {
+          arrow_shift_x = -arrowHeadGlyph.getWidth()/2;
+        }
+
+        arrowHeadGlyph.setRotation(rotation);
+
         if (this.note instanceof Vex.Flow.StaveNote) {
           for (i = topY; i <= botY; i += line_space) {
-            Vex.Flow.renderGlyph(this.context, x + this.x_shift - 4,
-                                 i, "wiggleArpeggiatoDown");
+            var glyph = new Vex.Flow.Glyph(wiggleType);
+            glyph.setRotation(rotation);
+            glyph.render(this.context, x + this.x_shift - 4, i);
           }
         } else {
           for (i = topY; i <= botY; i+= 10) {
-            Vex.Flow.renderGlyph(this.context, x + this.x_shift - 4,
-                                 i, "wiggleArpeggiatoDown");
+            var glyph = new Vex.Flow.Glyph(wiggleType);
+            glyph.setRotation(rotation);
+            glyph.render(this.context, x + this.x_shift - 4, i);
           }
           if (this.type == Vex.Flow.Stroke.Type.RASQUEDO_DOWN)
             text_y = i + 0.25 * line_space;
@@ -198,8 +225,6 @@ Vex.Flow.Stroke = (function() {
       }
 
       // Draw the arrow head
-      var arrowHeadGlyph = new Vex.Flow.Glyph(arrow);
-      arrow_shift_x = -arrowHeadGlyph.getCenterWidth();
       arrowHeadGlyph.render(this.context, x + this.x_shift + arrow_shift_x, arrow_y);
 
       // Draw the rasquedo "R"

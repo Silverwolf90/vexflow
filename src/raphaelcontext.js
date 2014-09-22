@@ -358,7 +358,12 @@ Vex.Flow.RaphaelContext = (function() {
       this.shadow_attributes.width = state.shadow_attributes.width;
       this.shadow_attributes.color = state.shadow_attributes.color;
       return this;
-    }
+    },
+
+    translate: function(x, y){
+    },
+
+    rotate: function() {}
   };
 
   return RaphaelContext;

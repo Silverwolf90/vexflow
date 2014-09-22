@@ -44,6 +44,7 @@ Vex.Flow.Glyph = (function() {
     this.metrics = null;
     this.x_shift = 0;
     this.y_shift = 0;
+    this.rotation = 0;
 
     if (options) this.setOptions(options); else this.reset();
   }
@@ -64,6 +65,7 @@ Vex.Flow.Glyph = (function() {
       return this; 
     },
     setYShift: function(y_shift) { this.y_shift = y_shift; return this; },
+    setRotation: function(degrees) { this.rotation = degrees; return this; }, 
     setContext: function(context) { this.context = context; return this; },
     getContext: function() { return this.context; },
 
@@ -130,12 +132,22 @@ Vex.Flow.Glyph = (function() {
         x_pos += this.width;
       }
 
-      Glyph.renderOutline(ctx, outline, scale, x_pos, y_pos);
+      ctx.save();
 
+      var radians = this.rotation * (Math.PI/ 180);
+      if (radians) {
+        ctx.translate(x_pos, y_pos);
+        ctx.rotate(radians);
+        ctx.translate(-x_pos, -y_pos);
+      }
+
+      Glyph.renderOutline(ctx, outline, scale, x_pos, y_pos);
 
       if (Glyph.DEBUG){
         Vex.drawCross(ctx, x_pos, y_pos);
       }
+
+      ctx.restore();
     },
 
     renderToStave: function(x) {
@@ -166,34 +178,40 @@ Vex.Flow.Glyph = (function() {
 
     for (var i = 0; i < outlineLength; ) {
       var action = outline[i++];
-
+      var x, y;
       switch(action) {
         case 'm':
-          ctx.moveTo(x_pos + outline[i++] * scale,
-                     y_pos + outline[i++] * -scale);
+          x = x_pos + outline[i++] * scale;
+          y = y_pos + outline[i++] * -scale;
+
+          ctx.moveTo(x, y);
           break;
         case 'l':
-          ctx.lineTo(x_pos + outline[i++] * scale,
-                     y_pos + outline[i++] * -scale);
-          break;
+          x = x_pos + outline[i++] * scale;
+          y = y_pos + outline[i++] * -scale;
 
+          ctx.lineTo(x,y);
+          break;
         case 'q':
           var cpx = x_pos + outline[i++] * scale;
           var cpy = y_pos + outline[i++] * -scale;
 
-          ctx.quadraticCurveTo(
-              x_pos + outline[i++] * scale,
-              y_pos + outline[i++] * -scale, cpx, cpy);
+          x = x_pos + outline[i++] * scale;
+          y = y_pos + outline[i++] * -scale;
+
+          ctx.quadraticCurveTo(x, y, cpx, cpy);
           break;
-
         case 'b':
-          var x = x_pos + outline[i++] * scale;
-          var y = y_pos + outline[i++] * -scale;
+          x = x_pos + outline[i++] * scale;
+          y = y_pos + outline[i++] * -scale;
 
-          ctx.bezierCurveTo(
-              x_pos + outline[i++] * scale, y_pos + outline[i++] * -scale,
-              x_pos + outline[i++] * scale, y_pos + outline[i++] * -scale,
-              x, y);
+          var x1 = x_pos + outline[i++] * scale;
+          var y1 = y_pos + outline[i++] * -scale;
+
+          var x2 = x_pos + outline[i++] * scale;
+          var y2 = y_pos + outline[i++] * -scale;
+
+          ctx.bezierCurveTo(x1, y1, x2, y2, x, y);
           break;
       }
     }

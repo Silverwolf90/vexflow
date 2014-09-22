@@ -631,13 +631,20 @@ Vex.Flow.Font.Bravura.Metrics = {
 
   //MULTI-LINE SEGMENTS
   "wiggleArpeggiatoDown":{
-    size: 35
+    size: 35,
+    direction: "horizontal"
+  },
+  "wiggleArpeggiatoUp":{
+    size: 35,
+    direction: "horizontal"
   },
   "wiggleArpeggiatoDownArrow":{
-    size: 35
+    size: 35,
+    direction: "horizontal"
   },
   "wiggleArpeggiatoUpArrow":{
-    size: 35
+    size: 35,
+    direction: "horizontal"
   },
 
   //ARROWS AND ARROWHEADS

@@ -174,6 +174,7 @@ Vex.Flow.Font.Gonville.Map = {
 
   //MULTI-LINE SEGMENTS
   "wiggleArpeggiatoDown":"va3",
+  "wiggleArpeggiatoUp":"va3",
   "wiggleArpeggiatoDownArrow":"v52",
   "wiggleArpeggiatoUpArrow":"vc3",
 

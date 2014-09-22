@@ -360,8 +360,7 @@ Vex.Flow.RaphaelContext = (function() {
       return this;
     },
 
-    translate: function(x, y){
-    },
+    translate: function(x, y){},
 
     rotate: function() {}
   };

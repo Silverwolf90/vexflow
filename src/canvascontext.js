@@ -160,6 +160,14 @@ Vex.Flow.CanvasContext = (function() {
 
     restore: function() {
       return this.vexFlowCanvasContext.restore();
+    },
+
+    rotate: function(radians) {
+      return this.vexFlowCanvasContext.rotate(radians);
+    },
+
+    translate: function(x, y) {
+      return this.vexFlowCanvasContext.translate(x, y);
     }
   };
 

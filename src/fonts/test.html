@@ -276,6 +276,9 @@
 
             Vex.Flow.Glyph.renderOutline(ctx, glyph.o.split(' '), scale, x, y);
 
+            Vex.drawCross(ctx, x, y, "#333333");
+
+
             var bb = METADATA.glyphBBoxes[glyphName];
             var bbCoords = getBoundingCoords(bb);
 

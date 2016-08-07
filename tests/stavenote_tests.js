@@ -6,7 +6,7 @@
 VF.Test.StaveNote = (function() {
   var StaveNote = {
     Start: function() {
-      var runTests = VF.Test.runTests;
+      var run = VF.Test.runTests;
 
       QUnit.module('StaveNote');
       test('Tick', StaveNote.ticks);
@@ -20,26 +20,27 @@ VF.Test.StaveNote = (function() {
 
       VF.Test.runUITests('Interactive Mouseover StaveNote', StaveNote.draw, { clef: 'treble', octaveShift: 0, restKey: 'r/4', ui: true });
 
-      runTests('StaveNote Draw - Treble', StaveNote.draw, { clef: 'treble', octaveShift: 0, restKey: 'r/4' });
-      runTests('StaveNote BoundingBoxes - Treble', StaveNote.drawBoundingBoxes, { clef: 'treble', octaveShift: 0, restKey: 'r/4' });
-      runTests('StaveNote Draw - Alto', StaveNote.draw, { clef: 'alto', octaveShift: -1, restKey: 'r/4' });
-      runTests('StaveNote Draw - Tenor', StaveNote.draw, { clef: 'tenor', octaveShift: -1, restKey: 'r/3' });
-      runTests('StaveNote Draw - Bass', StaveNote.draw, { clef: 'bass', octaveShift: -2, restKey: 'r/3' });
-      runTests('StaveNote Draw - Harmonic And Muted', StaveNote.drawHarmonicAndMuted);
-      runTests('StaveNote Draw - Slash', StaveNote.drawSlash);
-      runTests('Displacements', StaveNote.displacements);
-      runTests('StaveNote Draw - Bass 2', StaveNote.drawBass);
-      runTests('StaveNote Draw - Key Styles', StaveNote.drawKeyStyles);
-      runTests('StaveNote Draw - StaveNote Styles', StaveNote.drawNoteStyles);
-      runTests('Flag and Dot Placement - Stem Up', StaveNote.dotsAndFlagsStemUp);
-      runTests('Flag and Dots Placement - Stem Down', StaveNote.dotsAndFlagsStemDown);
-      runTests('Beam and Dot Placement - Stem Up', StaveNote.dotsAndBeamsUp);
-      runTests('Beam and Dot Placement - Stem Down', StaveNote.dotsAndBeamsDown);
-      runTests('Center Aligned Note', StaveNote.centerAlignedRest);
-      runTests('Center Aligned Note with Articulation', StaveNote.centerAlignedRestFermata);
-      runTests('Center Aligned Note with Annotation', StaveNote.centerAlignedRestAnnotation);
-      runTests('Center Aligned Note - Multi Voice', StaveNote.centerAlignedMultiVoice);
-      runTests('Center Aligned Note with Multiple Modifiers', StaveNote.centerAlignedNoteMultiModifiers);
+      run('StaveNote Draw - Treble', StaveNote.draw, { clef: 'treble', octaveShift: 0, restKey: 'r/4' });
+      run('StaveNote BoundingBoxes - Treble', StaveNote.drawBoundingBoxes, { clef: 'treble', octaveShift: 0, restKey: 'r/4' });
+      run('StaveNote Draw - Alto', StaveNote.draw, { clef: 'alto', octaveShift: -1, restKey: 'r/4' });
+      run('StaveNote Draw - Tenor', StaveNote.draw, { clef: 'tenor', octaveShift: -1, restKey: 'r/3' });
+      run('StaveNote Draw - Bass', StaveNote.draw, { clef: 'bass', octaveShift: -2, restKey: 'r/3' });
+      run('StaveNote Draw - Harmonic And Muted', StaveNote.drawHarmonicAndMuted);
+      run('StaveNote Draw - Slash', StaveNote.drawSlash);
+      run('Displacements', StaveNote.displacements);
+      run('StaveNote Draw - Bass 2', StaveNote.drawBass);
+      run('StaveNote Draw - Key Styles', StaveNote.drawKeyStyles);
+      run('StaveNote Draw - StaveNote Styles', StaveNote.drawNoteStyles);
+      run('Flag and Dot Placement - Stem Up', StaveNote.dotsAndFlagsStemUp);
+      run('Flag and Dots Placement - Stem Down', StaveNote.dotsAndFlagsStemDown);
+      run('Beam and Dot Placement - Stem Up', StaveNote.dotsAndBeamsUp);
+      run('Beam and Dot Placement - Stem Down', StaveNote.dotsAndBeamsDown);
+      run('Center Aligned Note', StaveNote.centerAlignedRest);
+      run('Center Aligned Note with Articulation', StaveNote.centerAlignedRestFermata);
+      run('Center Aligned Note with Annotation', StaveNote.centerAlignedRestAnnotation);
+      run('Center Aligned Note - Multi Voice', StaveNote.centerAlignedMultiVoice);
+      run('Center Aligned Note with Multiple Modifiers', StaveNote.centerAlignedNoteMultiModifiers);
+      run('Stem to Middle Line', StaveNote.stemToMiddleLine);
     },
 
     ticks: function() {
@@ -651,7 +652,6 @@ VF.Test.StaveNote = (function() {
       ok(true, 'Full Dot');
     },
 
-
     dotsAndFlagsStemDown: function(options, contextBuilder) {
       var ctx = new contextBuilder(options.elementId, 800, 160);
       ctx.scale(1.0, 1.0);
@@ -899,7 +899,70 @@ VF.Test.StaveNote = (function() {
 
       ok(true);
     },
+
+    stemToMiddleLine: function(options) {
+      var vf = VF.Test.makeFactory(options, 800, 160);
+      var score = vf.EasyScore();
+
+      var stave = vf.Stave({ y: 30 })
+        .addClef('treble')
+        .addTimeSignature('4/4');
+
+      const notes = [
+        { keys: ['d/4'], duration:  '4', stem_direction: 1 },
+        { keys: ['c/4'], duration:  '4', stem_direction: 1 },
+        { keys: ['b/3'], duration:  '4', stem_direction: 1 },
+        { keys: ['a/3'], duration:  '4', stem_direction: 1 },
+        { keys: ['g/3'], duration:  '4', stem_direction: 1 },
+        { keys: ['f/3'], duration:  '8', stem_direction: 1 },
+        { keys: ['e/3'], duration: '16', stem_direction: 1 },
+        { keys: ['d/3'], duration: '32', stem_direction: 1 },
+        { keys: ['c/3'], duration: '64', stem_direction: 1 },
+
+        { keys: ['f/5'], duration:  '4', stem_direction: -1 },
+        { keys: ['g/5'], duration:  '4', stem_direction: -1 },
+        { keys: ['a/5'], duration:  '4', stem_direction: -1 },
+        { keys: ['b/5'], duration:  '4', stem_direction: -1 },
+        { keys: ['c/6'], duration:  '4', stem_direction: -1 },
+        { keys: ['d/6'], duration:  '4', stem_direction: -1 },
+        { keys: ['e/6'], duration:  '8', stem_direction: -1 },
+        { keys: ['f/6'], duration: '16', stem_direction: -1 },
+        { keys: ['g/6'], duration: '32', stem_direction: -1 },
+        { keys: ['a/6'], duration: '64', stem_direction: -1 },
+      ]
+
+      const notes0 = notes
+        .map(function(note_struct) {
+          return vf.StaveNote(note_struct);
+        });
+
+      const beamedNotes = notes
+        .filter(function(note) {
+          return Number(note.duration) > 4;
+        })
+        .map(function(note_struct) {
+          return vf.StaveNote(note_struct);
+        });
+
+      const beams = [[0, 4],  [4, 8]]
+        .map(function(range) {
+          return beamedNotes.slice.apply(beamedNotes, range);
+        })
+        .map(function(notes) {
+          return vf.Beam({ notes: notes });
+        });
+
+      const voice0 = vf.Voice().setStrict(false).addTickables(notes0.concat(beamedNotes));
+
+      vf.Formatter()
+        .joinVoices([voice0])
+        .formatToStave([voice0], stave, { stave: stave });
+
+      vf.draw();
+
+      ok(true);
+    },
   };
 
   return StaveNote;
-})();
+}());

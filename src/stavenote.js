@@ -618,6 +618,7 @@ export class StaveNote extends StemmableNote {
 
     if (this.stem) {
       const { y_top, y_bottom } = this.getNoteHeadBounds();
+      this.stem.setStave(stave);
       this.stem.setYBounds(y_top, y_bottom);
     }
 
@@ -826,6 +827,7 @@ export class StaveNote extends StemmableNote {
   // Pre-render formatting
   preFormat() {
     if (this.preFormatted) return;
+    if (this.stem) this.stem.preFormat();
     if (this.modifierContext) this.modifierContext.preFormat();
 
     let width = this.getGlyphWidth() + this.extraLeftPx + this.extraRightPx;
